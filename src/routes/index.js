@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { LoaderRoutes } from "./loaderRoutes";
 import { PublicRoutes } from "./publicRoutes";
 import { useSelector } from "react-redux";
 import { USER_TYPES } from "../app/common/constants/usertypes";
@@ -12,6 +12,8 @@ export const Routes = () => {
     if (user) {
       if (user?.userType === USER_TYPES.ADMIN) {
         return <AdminRoutes />;
+      } else if (user?.userType === USER_TYPES.LOADER) {
+        return <LoaderRoutes />;
       } else {
         return <PublicRoutes />;
       }

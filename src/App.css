@@ -25,3 +25,8 @@
   color: #ffffff;
   cursor: pointer;
 }
+
+.users-list-item {
+  background-color: #ebebeb;
+  width: 100%;
+}
