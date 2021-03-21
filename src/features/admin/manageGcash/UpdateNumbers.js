@@ -26,7 +26,7 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
         setPhoneNumber("");
         setName("");
         setVisible(false);
-        toast.success("Category Updated");
+        toast.success("Number Updated");
       } catch (err) {
         toast.error(err.message);
       }
