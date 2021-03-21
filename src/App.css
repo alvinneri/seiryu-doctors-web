@@ -21,8 +21,8 @@
 }
 
 .category-list-item:hover {
-  background: #6f2232;
-  color: #ffffff;
+  background: gray;
+  /* color: #ffffff; */
   cursor: pointer;
 }
 
