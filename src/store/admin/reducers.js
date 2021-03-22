@@ -1,8 +1,9 @@
-import { SET_CATEGORIES, SET_USERS, SET_NUMBERS } from "./constants";
+import { SET_CATEGORIES, SET_USERS, SET_NUMBERS, SET_BANKS } from "./constants";
 const initialState = {
   categories: [],
   users: [],
   numbers: [],
+  banks: [],
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -23,6 +24,12 @@ export default function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         numbers: payload,
+      };
+    }
+    case SET_BANKS: {
+      return {
+        ...state,
+        banks: payload,
       };
     }
 

@@ -10,6 +10,7 @@ import {
   DollarOutlined,
   ApartmentOutlined,
   AuditOutlined,
+  BankOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -50,6 +51,11 @@ export const SideNavigation = () => {
             name: "MANAGE MATCHES",
             icon: <ApartmentOutlined />,
             path: "/manage-matches",
+          },
+          {
+            name: "MANAGE BANKS",
+            icon: <BankOutlined />,
+            path: "/manage-banks",
           },
           {
             name: "MANAGE GCASH",

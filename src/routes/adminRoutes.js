@@ -7,6 +7,7 @@ import Categories from "../features/admin/categories";
 import Users from "../features/admin/users";
 import ManageGcash from "../features/admin/manageGcash";
 import Matches from "../features/admin/matches";
+import Banks from "../features/admin/banks";
 
 export const AdminRoutes = () => {
   return (
@@ -16,6 +17,7 @@ export const AdminRoutes = () => {
       <PrivateRoute exact path={"/users"} component={Users} />
       <PrivateRoute exact path={"/manage-gcash"} component={ManageGcash} />
       <PrivateRoute exact path={"/manage-matches"} component={Matches} />
+      <PrivateRoute exact path={"/manage-banks"} component={Banks} />
     </Switch>
   );
 };
