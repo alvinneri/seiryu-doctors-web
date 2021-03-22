@@ -19,7 +19,7 @@ const Login = () => {
 
   return (
     <div>
-      <Form onSubmit={login}>
+      <Form onSubmit={onSubmit}>
         <Form.Item>
           <Input
             placeholder="Email"

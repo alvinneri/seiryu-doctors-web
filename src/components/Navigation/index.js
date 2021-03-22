@@ -9,6 +9,7 @@ import {
   MoneyCollectFilled,
   DollarOutlined,
   ApartmentOutlined,
+  AuditOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -69,9 +70,14 @@ export const SideNavigation = () => {
             path: "/",
           },
           {
-            name: "CREDITS",
+            name: "GCASH",
             icon: <MoneyCollectFilled />,
-            path: "/credits",
+            path: "/gcash",
+          },
+          {
+            name: "MY TRANSACTIONS",
+            icon: <AuditOutlined />,
+            path: "/my-transactions",
           },
           {
             name: "LOG OUT",

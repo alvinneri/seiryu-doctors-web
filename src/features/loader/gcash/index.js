@@ -12,57 +12,62 @@ import {
 import { setLoading } from "../../../store/public/actions";
 const { Header, Content, Sider } = Layout;
 
-const Credits = () => {
+const GCash = () => {
   const [refNo, setRefNo] = useState("");
   const [amount, setAmount] = useState("");
   const { user } = useSelector((state) => state.public);
+  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
 
   const onSubmit = async () => {
+    setSubmitting(true);
     if (!refNo) {
       dispatch(setLoading(false));
       toast.error("Input reference number");
+      setSubmitting(false);
       return;
     }
 
     const transactionRef = db.collection("transactions");
-    const snapshot = await transactionRef
+
+    const snapshot1 = await transactionRef
       .where("refNo", "==", refNo)
-      .where("status", "==", "PENDING")
+      .where("status", "==", "DONE")
+      .where("method", "==", "GCASH")
       .get();
 
-    if (snapshot.empty) {
-      toast.error("Reference No. is invalid.");
+    if (!snapshot1.empty) {
+      toast.error("Reference No. already loaded.");
+      setSubmitting(false);
       dispatch(setSelectedUser(null));
       return;
     }
 
-    snapshot.forEach(async (doc) => {
-      console.log(doc.data());
-      dispatch(setSelectedUser(doc.data().uid));
-      dispatch(setTransactionId(doc.id));
-      dispatch(setReferenceNo(refNo));
-      // userRef.doc(doc.data().uid).update({
-      //   credits: parseInt(oldCredits.data().credits) + parseInt(amount),
-      // });
+    const snapshot2 = await transactionRef
+      .where("refNo", "==", refNo)
+      .where("status", "==", "PENDING")
+      .where("method", "==", "GCASH")
+      .get();
 
-      // const loaderRef = await db.collection("loader_transactions").add({
-      //   refNo: refNo,
-      //   amount: amount,
-      //   loader: user.uid,
-      //   name: user.name,
-      //   email: user.email,
-      //   credited: doc.data().uid,
-      // });
+    if (snapshot2.empty) {
+      toast.error("Reference No. is invalid.");
+      setSubmitting(false);
+      dispatch(setSelectedUser(null));
+      return;
+    }
 
-      // transactionRef.doc(doc.id).update({
-      //   status: "DONE",
-      // });
-
-      // toast.success("Credits Successfully Added.");
-      // setRefNo("");
-      // setAmount("");
+    let docs = [];
+    snapshot2.forEach(async (doc) => {
+      docs.push({
+        ...doc.data(),
+        id: doc.id,
+      });
     });
+
+    dispatch(setSelectedUser(docs[0].uid));
+    dispatch(setTransactionId(docs[0].id));
+    dispatch(setReferenceNo(docs[0].refNo));
+    setSubmitting(false);
   };
 
   return (
@@ -81,7 +86,12 @@ const Credits = () => {
                 />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit" onClick={onSubmit}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  onClick={onSubmit}
+                  disabled={submitting ? true : false}
+                >
                   Search
                 </Button>
               </Form.Item>
@@ -94,4 +104,4 @@ const Credits = () => {
   );
 };
 
-export default Credits;
+export default GCash;

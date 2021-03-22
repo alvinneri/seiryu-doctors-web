@@ -1,15 +1,17 @@
 import React from "react";
 import { Switch } from "react-router-dom";
 import { PrivateRoute } from "../app/routes/PrivateRoute";
-import Credits from "../features/loader/credits";
+import GCash from "../features/loader/gcash";
 
 import Home from "../features/loader/Home";
+import Transactions from "../features/loader/transactions/TransactionsList";
 
 export const LoaderRoutes = () => {
   return (
     <Switch>
       <PrivateRoute exact path={"/"} component={Home} />
-      <PrivateRoute exact path={"/credits"} component={Credits} />
+      <PrivateRoute exact path={"/gcash"} component={GCash} />
+      <PrivateRoute exact path={"/my-transactions"} component={Transactions} />
     </Switch>
   );
 };

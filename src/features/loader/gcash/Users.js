@@ -4,6 +4,7 @@ import { db } from "../../../firebase/config";
 import { List, Divider, Typography, Button, Form, Input } from "antd";
 import { USER_TYPES } from "../../../app/common/constants/usertypes";
 import { toast } from "react-toastify";
+import { setReferenceNo } from "../../../store/loader/actions";
 
 const UsersList = () => {
   const dispatch = useDispatch();
@@ -17,27 +18,36 @@ const UsersList = () => {
   const [amount, setAmount] = useState("");
 
   const getUser = async () => {
-    let _user = [];
-    const userRef = db.collection("users").doc(selectedUser);
-    const unsubscribed = userRef.onSnapshot((doc) => {
-      _user.push(doc.data());
-    });
+    const userRef = await db.collection("users").doc(selectedUser);
 
-    setUser(_user);
+    const unsubscribed = userRef.onSnapshot((doc) => {
+      let _user = [];
+      _user.push(doc.data());
+      setUser([..._user]);
+      console.log(_user, "user array");
+    });
 
     return unsubscribed;
   };
 
   useEffect(() => {
     if (selectedUser) {
-      getUser();
+      (async () => {
+        await getUser();
+      })();
     } else {
       setUser([]);
     }
   }, [selectedUser]);
 
   const addCredits = async (item) => {
-    if (!amount && !selectedUser && !selectedReferenceNo) {
+    if (!amount || !selectedUser) {
+      toast.error("Enter amount.");
+      return;
+    }
+
+    if (!selectedReferenceNo) {
+      toast.error("Search for reference no first.");
       return;
     }
 
@@ -60,12 +70,13 @@ const UsersList = () => {
       date: new Date(),
     });
 
-    db.collection("transactions").doc(selectedTransactionId).update({
+    await db.collection("transactions").doc(selectedTransactionId).update({
       status: "DONE",
     });
 
     toast.success("Credits Successfully Added.");
     setAmount("");
+    dispatch(setReferenceNo(null));
   };
 
   return (
@@ -75,9 +86,9 @@ const UsersList = () => {
         header={<h3>User Details</h3>}
         bordered
         dataSource={userArr}
-        renderItem={(item) => {
+        renderItem={(item, index) => {
           return (
-            <div key={item.uid}>
+            <div key={index}>
               <List.Item className="users-list-item">
                 <div>
                   <Typography>Name: {item?.name}</Typography>
