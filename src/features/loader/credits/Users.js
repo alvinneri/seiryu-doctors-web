@@ -1,74 +1,113 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUsers } from "../../../store/loader/actions";
 import { db } from "../../../firebase/config";
-import { List, Divider, Typography } from "antd";
+import { List, Divider, Typography, Button, Form, Input } from "antd";
 import { USER_TYPES } from "../../../app/common/constants/usertypes";
+import { toast } from "react-toastify";
 
 const UsersList = () => {
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.admin);
-  const [selectedUser, setSelectedUser] = useState("");
-  const [visible, setVisible] = useState(false);
+  const { user } = useSelector((state) => state.public);
+  const {
+    selectedUser,
+    selectedTransactionId,
+    selectedReferenceNo,
+  } = useSelector((state) => state.loader);
+  const [userArr, setUser] = useState([]);
+  const [amount, setAmount] = useState("");
 
-  const getUsers = async () => {
-    const usersRef = await db.collection("users");
-    const unsubcribed = usersRef.onSnapshot((snapshot) => {
-      let _users = [];
-      snapshot.forEach((doc) => {
-        if (doc.data().userType === USER_TYPES.USER) {
-          let docs = {
-            ...doc.data(),
-            id: doc.id,
-          };
-
-          _users.push(docs);
-        }
-      });
-      dispatch(setUsers(_users));
+  const getUser = async () => {
+    let _user = [];
+    const userRef = db.collection("users").doc(selectedUser);
+    const unsubscribed = userRef.onSnapshot((doc) => {
+      _user.push(doc.data());
     });
-    return unsubcribed;
+
+    setUser(_user);
+
+    return unsubscribed;
   };
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    if (selectedUser) {
+      getUser();
+    } else {
+      setUser([]);
+    }
+  }, [selectedUser]);
 
-  const Item = ({ item }) => {
-    return (
-      <div>
-        <List.Item
-          className="users-list-item"
-          onClick={() => {
-            setVisible(true);
-            setSelectedUser(item);
-          }}
-        >
-          <div>
-            <Typography>Name: {item?.name}</Typography>
-            <Typography>Email: {item?.email}</Typography>
-            <Typography>
-              Phone Number: {item?.phoneNumber ? item?.phoneNumber : ""}
-            </Typography>
+  const addCredits = async (item) => {
+    if (!amount && !selectedUser && !selectedReferenceNo) {
+      return;
+    }
 
-            <Typography>
-              Credits: {item?.credits ? item?.credits : ""}
-            </Typography>
-          </div>
-        </List.Item>
-        <Divider />
-      </div>
-    );
+    const userRef = db
+      .collection("users")
+      .doc(selectedUser)
+      .update({
+        credits: parseInt(item.credits) + parseInt(amount),
+      });
+
+    const loaderRef = await db.collection("loader_transactions").add({
+      refNo: selectedReferenceNo,
+      amount: amount,
+      loaderId: user.uid,
+      loaderName: user.name,
+      loaderEmail: user.email,
+      creditedUser: selectedUser,
+      creditedName: item.name,
+      creditedEmail: item.email,
+      date: new Date(),
+    });
+
+    db.collection("transactions").doc(selectedTransactionId).update({
+      status: "DONE",
+    });
+
+    toast.success("Credits Successfully Added.");
+    setAmount("");
   };
 
   return (
     <div>
       <List
         size="small"
-        header={<h3>List Of Users</h3>}
+        header={<h3>User Details</h3>}
         bordered
-        dataSource={users}
-        renderItem={(item) => <Item item={item} />}
+        dataSource={userArr}
+        renderItem={(item) => {
+          return (
+            <div key={item.uid}>
+              <List.Item className="users-list-item">
+                <div>
+                  <Typography>Name: {item?.name}</Typography>
+                  <Typography>Email: {item?.email}</Typography>
+                  <Typography>
+                    Phone Number: {item?.phoneNumber ? item?.phoneNumber : ""}
+                  </Typography>
+                  <Typography>Credits: {item?.credits}</Typography>
+                  <Form.Item>
+                    <Input
+                      style={{ marginTop: "1em" }}
+                      placeholder="Enter No. of Credits"
+                      value={amount}
+                      type="number"
+                      onChange={(text) => setAmount(text.target.value)}
+                    />
+                    <Button
+                      type="primary"
+                      style={{ marginTop: "1em" }}
+                      onClick={() => addCredits(item)}
+                    >
+                      Add Credits
+                    </Button>
+                  </Form.Item>
+                </div>
+              </List.Item>
+              <Divider />
+            </div>
+          );
+        }}
       />
     </div>
   );

@@ -1,1 +1,3 @@
-export const SET_USERS = "SET_USERS";
+export const SET_SELECTED_USER = "SET_SELECTED_USER";
+export const SET_TRANSACTION_ID = "SET_TRANSACTION_ID";
+export const SET_REFERENCE_NO = "SET_REFERENCE_NO";

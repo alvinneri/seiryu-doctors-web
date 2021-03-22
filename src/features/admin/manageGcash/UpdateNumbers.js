@@ -37,7 +37,7 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
 
   return (
     <Modal
-      title="Update Category"
+      title="Update Number"
       visible={visible}
       onOk={submit}
       onCancel={() => setVisible(false)}
