@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Input, Button, Form } from "antd";
+import { Input, Button, Form, Image } from "antd";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/public/actions";
+import logo from "../../assets/images/barakobet.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,8 +19,14 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <Form onSubmit={onSubmit}>
+    <div className="login-container">
+      <div className="login-logo">
+        <img src={logo} className="login-logo" />
+      </div>
+      <Form
+        onSubmit={onSubmit}
+        style={{ width: "300px", textAlign: "center", marginTop: "1em" }}
+      >
         <Form.Item>
           <Input
             placeholder="Email"
@@ -35,7 +42,12 @@ const Login = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" onClick={onSubmit}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            onClick={onSubmit}
+            style={{ width: "300px" }}
+          >
             Login
           </Button>
         </Form.Item>
