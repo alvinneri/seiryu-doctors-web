@@ -63,6 +63,21 @@ export const SideNavigation = () => {
             path: "/manage-gcash",
           },
           {
+            name: "GCASH",
+            icon: <MoneyCollectFilled />,
+            path: "/gcash",
+          },
+          {
+            name: "BANK",
+            icon: <MoneyCollectFilled />,
+            path: "/banks",
+          },
+          {
+            name: "MY TRANSACTIONS",
+            icon: <AuditOutlined />,
+            path: "/my-transactions",
+          },
+          {
             name: "LOG OUT",
             icon: <LogoutOutlined />,
             path: "/",
@@ -79,6 +94,11 @@ export const SideNavigation = () => {
             name: "GCASH",
             icon: <MoneyCollectFilled />,
             path: "/gcash",
+          },
+          {
+            name: "BANK",
+            icon: <MoneyCollectFilled />,
+            path: "/banks",
           },
           {
             name: "MY TRANSACTIONS",

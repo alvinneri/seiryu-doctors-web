@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import UsersList from "./Users";
-import { Layout, Row, Menu, Form, Input, Button, Typography } from "antd";
+import { Layout, Row, Col, Form, Input, Button, Typography } from "antd";
 import { toast } from "react-toastify";
 import { db } from "../../../firebase/config";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ import {
 import { setLoading } from "../../../store/public/actions";
 const { Header, Content, Sider } = Layout;
 
-const GCash = () => {
+const Banks = () => {
   const [refNo, setRefNo] = useState("");
   const [amount, setAmount] = useState("");
   const { user } = useSelector((state) => state.public);
@@ -33,7 +33,7 @@ const GCash = () => {
     const snapshot1 = await transactionRef
       .where("refNo", "==", refNo)
       .where("status", "==", "DONE")
-      .where("method", "==", "GCASH")
+      .where("method", "==", "BANK")
       .get();
 
     if (!snapshot1.empty) {
@@ -46,7 +46,7 @@ const GCash = () => {
     const snapshot2 = await transactionRef
       .where("refNo", "==", refNo)
       .where("status", "==", "PENDING")
-      .where("method", "==", "GCASH")
+      .where("method", "==", "BANK")
       .get();
 
     if (snapshot2.empty) {
@@ -74,7 +74,7 @@ const GCash = () => {
     <Layout style={{ height: "100%" }}>
       <Header>
         <Typography style={{ color: "#ffffff" }}>
-          Add Credits Via GCash Reference No.
+          Add Credits Via Bank Reference No.
         </Typography>
       </Header>
       <Layout>
@@ -109,4 +109,4 @@ const GCash = () => {
   );
 };
 
-export default GCash;
+export default Banks;

@@ -17,6 +17,7 @@ const Transactions = () => {
 
     const snapshot = await transactionsRef
       .where("loaderId", "==", user.uid)
+      .orderBy("date", "desc")
       .get();
 
     if (snapshot.empty) {
