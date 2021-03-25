@@ -1,6 +1,6 @@
 import { SET_USER, SET_LOADING } from "./constants";
 const initialState = {
-  loading: false,
+  loading: true,
   user: null,
 };
 

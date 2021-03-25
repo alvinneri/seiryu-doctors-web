@@ -12,9 +12,7 @@ const RecruitedPlayers = () => {
 
   const getUsers = async () => {
     const usersRef = await db.collection("users");
-
     const snapshot = await usersRef.where("invitedBy", "==", user.uid).get();
-
     if (!snapshot.empty) {
       let _users = [];
       snapshot.forEach((doc) => {

@@ -8,6 +8,7 @@ export const Auth = ({ children }) => {
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
+      dispatch(setLoading(true));
       try {
         const userData = await db.doc("/users/" + user?.uid).get();
         dispatch(setUser(userData.data()));

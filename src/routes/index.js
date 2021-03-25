@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { LoaderRoutes } from "./loaderRoutes";
 import { RecruiterRoutes } from "./recruiterRoutes";
 import { PublicRoutes } from "./publicRoutes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { USER_TYPES } from "../app/common/constants/usertypes";
 import { AdminRoutes } from "./adminRoutes";
+import { setLoading } from "../store/public/actions";
 
 export const Routes = () => {
   const { user } = useSelector((state) => state.public);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const getRoutes = () => {
     if (user) {

@@ -17,13 +17,9 @@ const App = () => {
   return (
     <BrowserRouter>
       <ToastContainer />
-      {(!loading && (
-        <Auth>
-          <LayoutWrapper>
-            <Routes />
-          </LayoutWrapper>
-        </Auth>
-      )) || <Loader />}
+      <Auth>
+        <LayoutWrapper>{!loading ? <Routes /> : <Loader />}</LayoutWrapper>
+      </Auth>
     </BrowserRouter>
   );
 };
