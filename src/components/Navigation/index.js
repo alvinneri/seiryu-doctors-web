@@ -11,6 +11,7 @@ import {
   ApartmentOutlined,
   AuditOutlined,
   BankOutlined,
+  UsergroupAddOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -83,7 +84,7 @@ export const SideNavigation = () => {
             path: "/",
           },
         ]);
-      } else if (user.userType === USER_TYPES.LOADER) {
+      } else if (user?.userType === USER_TYPES.LOADER) {
         setMenuItems([
           {
             name: "HOME",
@@ -111,11 +112,16 @@ export const SideNavigation = () => {
             path: "/",
           },
         ]);
-      } else {
+      } else if (user?.userType === USER_TYPES.RECRUITER) {
         setMenuItems([
           {
-            name: "LOGIN",
-            icon: <LoginOutlined />,
+            name: "RECRUITED PLAYERS",
+            icon: <UsergroupAddOutlined />,
+            path: "/",
+          },
+          {
+            name: "LOG OUT",
+            icon: <LogoutOutlined />,
             path: "/",
           },
         ]);
