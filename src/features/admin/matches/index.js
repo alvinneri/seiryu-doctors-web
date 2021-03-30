@@ -70,6 +70,8 @@ const Matches = () => {
           ...doc?.data()?.match,
           id: doc.id,
         });
+      } else {
+        setCurrentMatch(null);
       }
     });
     return unsubcribed;

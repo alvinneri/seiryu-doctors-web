@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import { db } from "../../../firebase/config";
 
 const CurrentMatch = ({ currentMatch }) => {
+  
   const updateStatus = (status) => {
     const matchRef = db
       .collection("categories")
