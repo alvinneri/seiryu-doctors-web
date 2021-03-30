@@ -23,7 +23,7 @@ export const AdminRoutes = () => {
       <PrivateRoute exact path={"/manage-banks"} component={ManageBanks} />
       <PrivateRoute exact path={"/gcash"} component={GCash} />
       <PrivateRoute exact path={"/banks"} component={Banks} />
-      <PrivateRoute exact path={"/my-transactions"} component={Transactions} />
+      <PrivateRoute exact path={"/transactions"} component={Transactions} />
       <PrivateRoute exact path={"/withdrawal-request"} component={Withdraw} />
     </Switch>
   );

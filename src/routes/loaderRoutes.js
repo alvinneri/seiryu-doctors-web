@@ -6,6 +6,7 @@ import GCash from "../features/loader/gcash";
 
 import Home from "../features/loader/Home";
 import Transactions from "../features/loader/transactions/TransactionsList";
+import Withdraw from "../features/loader/withdraw";
 
 export const LoaderRoutes = () => {
   return (
@@ -14,6 +15,7 @@ export const LoaderRoutes = () => {
       <PrivateRoute exact path={"/gcash"} component={GCash} />
       <PrivateRoute exact path={"/banks"} component={Banks} />
       <PrivateRoute exact path={"/my-transactions"} component={Transactions} />
+      <PrivateRoute exact path={"/withdrawal-request"} component={Withdraw} />
     </Switch>
   );
 };
