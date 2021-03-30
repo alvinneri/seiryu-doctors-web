@@ -24,7 +24,7 @@ const Matches = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.admin);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(null);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [matchNumber, setMatchNumber] = useState("");
 
@@ -53,6 +53,10 @@ const Matches = () => {
       getCurrentMatch();
     }
   }, [selectedCategory]);
+
+  useEffect(() => {
+    getCurrentMatch();
+  }, []);
 
   const getCurrentMatch = async () => {
     const categoriesRef = await db
@@ -84,8 +88,17 @@ const Matches = () => {
   );
 
   const createNewMatch = async () => {
-    if (!name && !matchNumber && !selectedCategory) {
-      toast.error("Match name, number and category are required.");
+    if (!name) {
+      toast.error("Match name is required.");
+      return;
+    }
+    if (!matchNumber) {
+      toast.error("Match Number is required.");
+      return;
+    }
+    if (!selectedCategory) {
+      toast.error("Category is required.");
+      return;
     }
     const categoriesRef = await db
       .collection("categories")
