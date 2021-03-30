@@ -163,7 +163,7 @@ export const SideNavigation = () => {
       }}
     >
       <div className="logo" />`{" "}
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
+      <Menu theme="dark" mode="inline">
         {menuItems.map((route, index) => {
           return (
             <Menu.Item
