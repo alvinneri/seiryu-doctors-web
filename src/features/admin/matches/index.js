@@ -30,6 +30,7 @@ const Matches = () => {
 
   const getCategories = async () => {
     const categoriesRef = await db.collection("categories");
+
     const unsubcribed = categoriesRef.onSnapshot((snapshot) => {
       let _categories = [];
       snapshot.forEach((doc) => {
@@ -67,7 +68,7 @@ const Matches = () => {
 
       if (doc?.data()?.match) {
         setCurrentMatch({
-          ...doc?.data()?.match,
+          ...doc?.data(),
           id: doc.id,
         });
       } else {
@@ -102,6 +103,7 @@ const Matches = () => {
       toast.error("Category is required.");
       return;
     }
+
     const categoriesRef = await db
       .collection("categories")
       .doc(selectedCategory.id)
@@ -113,17 +115,65 @@ const Matches = () => {
           number: matchNumber,
           meron: {
             totalBets: 0,
+            betters: [],
           },
           wala: {
             totalBets: 0,
+            betters: [],
           },
         },
+        isProcessed: false,
       })
       .then(() => {
         toast.success("New Match Created.");
         setName("");
         setMatchNumber("");
       });
+  };
+
+  const processCredits = async () => {
+    if (currentMatch.isProcessed) {
+      toast.error("Bets already processed.");
+      return;
+    }
+
+    if (currentMatch) {
+      await db.collection("fights").add({
+        ...currentMatch.match,
+        date: new Date(),
+      });
+
+      const categoriesRef = await db
+        .collection("categories")
+        .doc(selectedCategory.id)
+        .update({
+          isProcessed: true,
+        });
+
+      if (currentMatch.match.result === "MERON") {
+        await currentMatch.match.meron.betters.forEach(async (item, index) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + item.amount,
+          });
+        });
+        toast.success("All bets were processed successfully.");
+      } else {
+        currentMatch.match.wala.betters.forEach(async (item) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + item.amount,
+          });
+        });
+        toast.success("All bets were processed successfully.");
+      }
+    }
   };
 
   return (
@@ -183,6 +233,9 @@ const Matches = () => {
             ) : (
               <p>No matches for this category</p>
             )}
+            <Button type="danger" onClick={processCredits}>
+              PROCESS CREDITS
+            </Button>
           </div>
         </Content>
       </Layout>

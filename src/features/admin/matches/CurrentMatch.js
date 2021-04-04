@@ -4,7 +4,6 @@ import { Row, Col } from "antd";
 import { db } from "../../../firebase/config";
 
 const CurrentMatch = ({ currentMatch }) => {
-  
   const updateStatus = (status) => {
     const matchRef = db
       .collection("categories")
@@ -12,14 +11,16 @@ const CurrentMatch = ({ currentMatch }) => {
       .update({
         match: {
           meron: {
-            totalBets: currentMatch?.meron?.totalBets,
+            totalBets: currentMatch?.match?.meron?.totalBets,
+            betters: [...currentMatch?.match?.meron?.betters],
           },
           wala: {
-            totalBets: currentMatch?.wala?.totalBets,
+            totalBets: currentMatch?.match?.wala?.totalBets,
+            betters: [...currentMatch?.match?.wala?.betters],
           },
-          number: currentMatch?.number,
-          result: currentMatch?.result,
-          name: currentMatch?.name,
+          number: currentMatch?.match?.number,
+          result: currentMatch?.match?.result,
+          name: currentMatch?.match?.name,
           status: status,
         },
       });
@@ -32,15 +33,17 @@ const CurrentMatch = ({ currentMatch }) => {
       .update({
         match: {
           meron: {
-            totalBets: currentMatch?.meron?.totalBets,
+            totalBets: currentMatch?.match?.meron?.totalBets,
+            betters: [...currentMatch?.match?.meron?.betters],
           },
           wala: {
-            totalBets: currentMatch?.wala?.totalBets,
+            totalBets: currentMatch?.match?.wala?.totalBets,
+            betters: [...currentMatch?.match?.wala?.betters],
           },
-          number: currentMatch?.number,
+          number: currentMatch?.match?.number,
           result: result,
-          name: currentMatch?.name,
-          status: currentMatch?.status,
+          name: currentMatch?.match?.name,
+          status: currentMatch?.match?.status,
         },
       });
   };
@@ -62,15 +65,15 @@ const CurrentMatch = ({ currentMatch }) => {
       </Col>
       <Col span={8}>
         <h3>Current Match</h3>
-        <p>Status: {currentMatch?.status}</p>
-        <p>Result: {currentMatch?.result}</p>
-        <p>Match Number: #{currentMatch?.number}</p>
-        <p>Match Name: {currentMatch?.name}</p>
+        <p>Status: {currentMatch?.match?.status}</p>
+        <p>Result: {currentMatch?.match?.result}</p>
+        <p>Match Number: #{currentMatch?.match?.number}</p>
+        <p>Match Name: {currentMatch?.match?.name}</p>
       </Col>
       <Col span={8}>
         <h3>BETS</h3>
-        <p>MERON: {currentMatch?.meron?.totalBets}</p>
-        <p>WALA: {currentMatch?.wala?.totalBets}</p>
+        <p>MERON: {currentMatch?.match?.meron?.totalBets}</p>
+        <p>WALA: {currentMatch?.match?.wala?.totalBets}</p>
       </Col>
     </Row>
   );
