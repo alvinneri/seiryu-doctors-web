@@ -12,6 +12,7 @@ import {
   AuditOutlined,
   BankOutlined,
   UsergroupAddOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -87,6 +88,11 @@ export const SideNavigation = () => {
             name: "BETTING HISTORY",
             icon: <AuditOutlined />,
             path: "/bet-history",
+          },
+          {
+            name: "SETTINGS",
+            icon: <SettingOutlined />,
+            path: "/app-settings",
           },
           {
             name: "LOG OUT",
