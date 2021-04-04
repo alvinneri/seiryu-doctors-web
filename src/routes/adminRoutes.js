@@ -12,6 +12,7 @@ import Banks from "../features/loader/banks";
 import GCash from "../features/loader/gcash";
 import Transactions from "../features/admin/transactions";
 import Withdraw from "../features/admin/withdraw";
+import BetHistory from "../features/admin/bethistory";
 export const AdminRoutes = () => {
   return (
     <Switch>
@@ -25,6 +26,7 @@ export const AdminRoutes = () => {
       <PrivateRoute exact path={"/banks"} component={Banks} />
       <PrivateRoute exact path={"/transactions"} component={Transactions} />
       <PrivateRoute exact path={"/withdrawal-request"} component={Withdraw} />
+      <PrivateRoute exact path={"/bet-history"} component={BetHistory} />
     </Switch>
   );
 };

@@ -84,6 +84,11 @@ export const SideNavigation = () => {
             path: "/transactions",
           },
           {
+            name: "BETTING HISTORY",
+            icon: <AuditOutlined />,
+            path: "/bet-history",
+          },
+          {
             name: "LOG OUT",
             icon: <LogoutOutlined />,
             path: "/",
@@ -111,6 +116,7 @@ export const SideNavigation = () => {
             icon: <AuditOutlined />,
             path: "/my-transactions",
           },
+
           {
             name: "WITHDRAWAL REQUEST",
             icon: <AuditOutlined />,
