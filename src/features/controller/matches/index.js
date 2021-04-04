@@ -22,38 +22,12 @@ const { Header, Content } = Layout;
 
 const Matches = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.public);
   const { categories } = useSelector((state) => state.admin);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [name, setName] = useState(null);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [matchNumber, setMatchNumber] = useState("");
-
-  const getCategories = async () => {
-    const categoriesRef = await db.collection("categories");
-
-    const unsubcribed = categoriesRef.onSnapshot((snapshot) => {
-      let _categories = [];
-      snapshot.forEach((doc) => {
-        let docs = {
-          ...doc.data(),
-          id: doc.id,
-        };
-        _categories.push(docs);
-      });
-      dispatch(setCategories(_categories));
-    });
-    return unsubcribed;
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, []);
-
-  useEffect(() => {
-    if (selectedCategory) {
-      getCurrentMatch();
-    }
-  }, [selectedCategory]);
 
   useEffect(() => {
     getCurrentMatch();
@@ -62,9 +36,9 @@ const Matches = () => {
   const getCurrentMatch = async () => {
     const categoriesRef = await db
       .collection("categories")
-      .doc(selectedCategory.id);
+      .doc(user.controllerCategory);
     const unsubcribed = categoriesRef.onSnapshot((doc) => {
-      console.log(doc.data());
+      setCategoryName(doc.data().name);
 
       if (doc?.data()?.match) {
         setCurrentMatch({
@@ -78,22 +52,10 @@ const Matches = () => {
     return unsubcribed;
   };
 
-  const Categories = (
-    <Menu>
-      {categories.map((item, index) => {
-        return (
-          <Menu.Item key={index} onClick={() => setSelectedCategory(item)}>
-            <p>{item.name}</p>
-          </Menu.Item>
-        );
-      })}
-    </Menu>
-  );
-
   const deleteMatch = async () => {
     const categoriesRef = await db
       .collection("categories")
-      .doc(selectedCategory.id)
+      .doc(user.controllerCategory)
       .update({
         match: null,
       })
@@ -113,14 +75,10 @@ const Matches = () => {
       toast.error("Match Number is required.");
       return;
     }
-    if (!selectedCategory) {
-      toast.error("Category is required.");
-      return;
-    }
 
     const categoriesRef = await db
       .collection("categories")
-      .doc(selectedCategory.id)
+      .doc(user.controllerCategory)
       .update({
         match: {
           name: name,
@@ -164,7 +122,7 @@ const Matches = () => {
 
       const categoriesRef = await db
         .collection("categories")
-        .doc(selectedCategory.id)
+        .doc(user.controllerCategory)
         .update({
           isProcessed: true,
         });
@@ -201,12 +159,7 @@ const Matches = () => {
     <Layout style={{ height: "100%" }}>
       <Header>
         <Menu theme="dark" mode="horizontal">
-          <Dropdown overlay={Categories}>
-            <p className="ant-dropdown-link">
-              {selectedCategory ? selectedCategory.name : "Select Category"}{" "}
-              <DownOutlined />
-            </p>
-          </Dropdown>
+          <p>Category: {categoryName}</p>
         </Menu>
       </Header>
       <Layout>

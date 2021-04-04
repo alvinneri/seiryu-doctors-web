@@ -5,7 +5,7 @@ import { PublicRoutes } from "./publicRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { USER_TYPES } from "../app/common/constants/usertypes";
 import { AdminRoutes } from "./adminRoutes";
-import { setLoading } from "../store/public/actions";
+import { ControllerRoutes } from "./controllerRoutes";
 
 export const Routes = () => {
   const { user } = useSelector((state) => state.public);
@@ -22,6 +22,8 @@ export const Routes = () => {
         return <LoaderRoutes />;
       } else if (user?.userType === USER_TYPES.RECRUITER) {
         return <RecruiterRoutes />;
+      } else if (user?.userType === USER_TYPES.CONTROLLER) {
+        return <ControllerRoutes />;
       } else {
         return <PublicRoutes />;
       }

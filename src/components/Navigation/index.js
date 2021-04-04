@@ -141,6 +141,19 @@ export const SideNavigation = () => {
             path: "/",
           },
         ]);
+      } else if (user?.userType === USER_TYPES.CONTROLLER) {
+        setMenuItems([
+          {
+            name: "MATCHES",
+            icon: <ApartmentOutlined />,
+            path: "/",
+          },
+          {
+            name: "LOG OUT",
+            icon: <LogoutOutlined />,
+            path: "/",
+          },
+        ]);
       }
     } else {
       setMenuItems([
