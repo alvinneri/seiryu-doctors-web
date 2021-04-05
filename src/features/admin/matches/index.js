@@ -28,6 +28,27 @@ const Matches = () => {
   const [currentMatch, setCurrentMatch] = useState(null);
   const [matchNumber, setMatchNumber] = useState("");
 
+  const [appPercentage, setAppPercentage] = useState(0);
+  const [betLimits, setBetLimits] = useState(10000);
+  const [id, setDocId] = useState(null);
+
+  const getAppSettings = async () => {
+    const appSettingRef = db.collection("app_settings");
+    const unsubscribe = appSettingRef.onSnapshot((snapshot) => {
+      snapshot.forEach((doc) => {
+        setBetLimits(doc.data().betLimits);
+        setAppPercentage(doc.data().appPercentage);
+        setDocId(doc.id);
+      });
+    });
+
+    return unsubscribe;
+  };
+
+  useEffect(() => {
+    getAppSettings();
+  }, []);
+
   const getCategories = async () => {
     const categoriesRef = await db.collection("categories");
 
@@ -145,6 +166,14 @@ const Matches = () => {
       });
   };
 
+  const getPayout = (totalBets, amount) => {
+    const percent = appPercentage / 100;
+    const perHundred = totalBets - totalBets * percent;
+
+    const payout = (totalBets / 100) * perHundred;
+    return payout;
+  };
+
   const processCredits = async () => {
     if (!currentMatch) {
       toast.error("No Bets to be process.");
@@ -176,7 +205,10 @@ const Matches = () => {
           const credits = user.data()?.credits ? user.data()?.credits : 0;
 
           await userRef.update({
-            credits: credits + item.amount,
+            credits:
+              credits +
+              getPayout(currentMatch?.match?.meron?.totalBets, item.amount) +
+              item.amount,
           });
         });
         toast.success("All bets were processed successfully.");
@@ -187,13 +219,16 @@ const Matches = () => {
           const credits = user.data()?.credits ? user.data()?.credits : 0;
 
           await userRef.update({
-            credits: credits + item.amount,
+            credits:
+              credits +
+              getPayout(currentMatch?.match?.wala?.totalBets, item.amount) +
+              item.amount,
           });
         });
         toast.success("All bets were processed successfully.");
       }
 
-      deleteMatch();
+      // deleteMatch();
     }
   };
 
