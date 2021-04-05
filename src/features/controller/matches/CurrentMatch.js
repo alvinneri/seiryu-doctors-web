@@ -1,9 +1,38 @@
 import { Button } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import { db } from "../../../firebase/config";
 
 const CurrentMatch = ({ currentMatch, deleteMatch }) => {
+  const [appPercentage, setAppPercentage] = useState(0);
+  const [betLimits, setBetLimits] = useState(10000);
+  const [id, setDocId] = useState(null);
+
+  const getAppSettings = async () => {
+    const appSettingRef = db.collection("app_settings");
+    const unsubscribe = appSettingRef.onSnapshot((snapshot) => {
+      snapshot.forEach((doc) => {
+        setBetLimits(doc.data().betLimits);
+        setAppPercentage(doc.data().appPercentage);
+        setDocId(doc.id);
+      });
+    });
+
+    return unsubscribe;
+  };
+
+  useEffect(() => {
+    getAppSettings();
+  }, []);
+
+  const getPayout = (totalBets, amount) => {
+    const percent = appPercentage / 100;
+    const perHundred = totalBets - totalBets * percent;
+
+    const payout = (totalBets / 100) * perHundred;
+    return payout;
+  };
+
   const updateStatus = (status) => {
     const matchRef = db
       .collection("categories")
@@ -110,7 +139,9 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
       <Col span={8}>
         <h3>BETS</h3>
         <p>MERON: {currentMatch?.match?.meron?.totalBets}</p>
+        <p>PAYOUT MERON: {getPayout(currentMatch?.match?.meron?.totalBets)}</p>
         <p>WALA: {currentMatch?.match?.wala?.totalBets}</p>
+        <p>PAYOUT WALA: {getPayout(currentMatch?.match?.wala?.totalBets)}</p>
       </Col>
     </Row>
   );
