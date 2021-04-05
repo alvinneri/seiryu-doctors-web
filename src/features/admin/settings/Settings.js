@@ -7,6 +7,7 @@ const { Header, Content, Sider } = Layout;
 export const Settings = () => {
   const [appPercentage, setAppPercentage] = useState(0);
   const [betLimits, setBetLimits] = useState(10000);
+  const [betMin, setBetMin] = useState(100);
   const [id, setDocId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -16,11 +17,13 @@ export const Settings = () => {
       const appSettingRef = db.collection("app_settings").doc(id).update({
         appPercentage,
         betLimits,
+        betMin,
       });
     } else {
       const appSettingRef = db.collection("app_settings").add({
         appPercentage,
         betLimits,
+        betMin,
       });
     }
     toast.success("App Settings Updated");
@@ -71,6 +74,14 @@ export const Settings = () => {
                   placeholder="Maximum Bet Allowed."
                   value={betLimits}
                   onChange={(text) => setBetLimits(text.target.value)}
+                />
+              </Form.Item>
+              <Form.Item>
+                <span>Minimum Bet Allowed</span>
+                <Input
+                  placeholder="Minimum Bet Allowed."
+                  value={betMin}
+                  onChange={(text) => setBetMin(text.target.value)}
                 />
               </Form.Item>
               <Form.Item>

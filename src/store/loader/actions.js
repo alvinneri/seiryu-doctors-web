@@ -3,6 +3,7 @@ import {
   SET_TRANSACTION_ID,
   SET_REFERENCE_NO,
   SET_TRANSACTIONS,
+  SET_AMOUNT,
 } from "./constants";
 import { SET_LOADING } from "../public/constants";
 import { auth, db } from "../../firebase/config";
@@ -32,6 +33,13 @@ export const setReferenceNo = (payload) => {
 export const setTransactions = (payload) => {
   return {
     type: SET_TRANSACTIONS,
+    payload: payload,
+  };
+};
+
+export const setAmountRequest = (payload) => {
+  return {
+    type: SET_AMOUNT,
     payload: payload,
   };
 };

@@ -8,6 +8,7 @@ import {
   setSelectedUser,
   setTransactionId,
   setReferenceNo,
+  setAmountRequest,
 } from "../../../store/loader/actions";
 import { setLoading } from "../../../store/public/actions";
 const { Header, Content, Sider } = Layout;
@@ -67,6 +68,7 @@ const GCash = () => {
     dispatch(setSelectedUser(docs[0].uid));
     dispatch(setTransactionId(docs[0].id));
     dispatch(setReferenceNo(docs[0].refNo));
+    dispatch(setAmountRequest(docs[0].amount));
     setSubmitting(false);
   };
 

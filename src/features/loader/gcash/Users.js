@@ -13,6 +13,7 @@ const UsersList = () => {
     selectedUser,
     selectedTransactionId,
     selectedReferenceNo,
+    selectedAmount,
   } = useSelector((state) => state.loader);
   const [userArr, setUser] = useState([]);
   const [amount, setAmount] = useState("");
@@ -94,9 +95,11 @@ const UsersList = () => {
                   <Typography>Name: {item?.name}</Typography>
                   <Typography>Email: {item?.email}</Typography>
                   <Typography>
-                    Phone Number: {item?.phoneNumber ? item?.phoneNumber : ""}
+                    Phone Number: {item?.phonenumber ? item?.phonenumber : ""}
                   </Typography>
-                  <Typography>Credits: {item?.credits}</Typography>
+                  <Typography>Current Credits: {item?.credits}</Typography>
+                  <Typography>Credits Requested: {selectedAmount}</Typography>
+
                   <Form.Item>
                     <Input
                       style={{ marginTop: "1em" }}

@@ -166,12 +166,17 @@ const Matches = () => {
       });
   };
 
-  const getPayout = (totalBets, amount) => {
+  const getPayout = (totalBets, totalSides) => {
+    if (!totalSides) {
+      return 0;
+    }
+    const origMultiplier = (totalBets / totalSides) * 100;
+    console.log(origMultiplier);
     const percent = appPercentage / 100;
-    const perHundred = totalBets - totalBets * percent;
+    const afterCut = origMultiplier - origMultiplier * percent;
 
-    const payout = (totalBets / 100) * perHundred;
-    return payout;
+    const payout = (totalBets / 100) * afterCut;
+    return afterCut.toFixed(2);
   };
 
   const processCredits = async () => {
@@ -207,8 +212,13 @@ const Matches = () => {
           await userRef.update({
             credits:
               credits +
-              getPayout(currentMatch?.match?.meron?.totalBets, item.amount) +
-              item.amount,
+              (getPayout(
+                currentMatch?.match?.meron?.totalBets +
+                  currentMatch?.match?.wala?.totalBets,
+                currentMatch?.match?.meron?.totalBets
+              ) /
+                100) *
+                item.amount,
           });
         });
         toast.success("All bets were processed successfully.");
@@ -221,8 +231,13 @@ const Matches = () => {
           await userRef.update({
             credits:
               credits +
-              getPayout(currentMatch?.match?.wala?.totalBets, item.amount) +
-              item.amount,
+              (getPayout(
+                currentMatch?.match?.meron?.totalBets +
+                  currentMatch?.match?.wala?.totalBets,
+                currentMatch?.match?.wala?.totalBets
+              ) /
+                100) *
+                item.amount,
           });
         });
         toast.success("All bets were processed successfully.");

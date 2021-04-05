@@ -4,6 +4,7 @@ import {
   SET_NUMBERS,
   SET_BANKS,
   SET_BET_HISTORY,
+  SET_CREDIT_REQUESTS,
 } from "./constants";
 import { SET_LOADING } from "../public/constants";
 import { auth, db } from "../../firebase/config";
@@ -40,6 +41,13 @@ export const setBanks = (payload) => {
 export const setBetHistory = (payload) => {
   return {
     type: SET_BET_HISTORY,
+    payload: payload,
+  };
+};
+
+export const setCreditRequests = (payload) => {
+  return {
+    type: SET_CREDIT_REQUESTS,
     payload: payload,
   };
 };

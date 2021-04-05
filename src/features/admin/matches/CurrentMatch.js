@@ -25,12 +25,17 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
     getAppSettings();
   }, []);
 
-  const getPayout = (totalBets, amount) => {
+  const getPayout = (totalBets, totalSides) => {
+    if (!totalSides) {
+      return 0;
+    }
+    const origMultiplier = (totalBets / totalSides) * 100;
+    console.log(origMultiplier);
     const percent = appPercentage / 100;
-    const perHundred = totalBets - totalBets * percent;
+    const afterCut = origMultiplier - origMultiplier * percent;
 
-    const payout = (totalBets / 100) * perHundred;
-    return payout.toFixed(2);
+    const payout = (totalBets / 100) * afterCut;
+    return afterCut.toFixed(2);
   };
 
   const updateStatus = (status) => {
@@ -83,7 +88,7 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
         <p>CHOOSE A STATUS:</p>
         <div>
           <Button
-            onClick={() => updateStatus("CLOSE")}
+            onClick={() => updateStatus("CLOSED")}
             style={{ background: "red", color: "white" }}
           >
             CLOSE
@@ -95,7 +100,7 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
             OPEN
           </Button>
           <Button
-            onClick={() => updateStatus("CANCEL")}
+            onClick={() => updateStatus("CANCELLED")}
             style={{ background: "black", color: "white" }}
           >
             CANCEL
@@ -139,9 +144,23 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
       <Col span={8}>
         <h3>BETS</h3>
         <p>MERON: {currentMatch?.match?.meron?.totalBets}</p>
-        <p>PAYOUT MERON: {getPayout(currentMatch?.match?.meron?.totalBets)}</p>
+        <p>
+          PAYOUT MERON:{" "}
+          {getPayout(
+            currentMatch?.match?.meron?.totalBets +
+              currentMatch?.match?.wala?.totalBets,
+            currentMatch?.match?.meron?.totalBets
+          )}
+        </p>
         <p>WALA: {currentMatch?.match?.wala?.totalBets}</p>
-        <p>PAYOUT WALA: {getPayout(currentMatch?.match?.wala?.totalBets)}</p>
+        <p>
+          PAYOUT WALA:{" "}
+          {getPayout(
+            currentMatch?.match?.meron?.totalBets +
+              currentMatch?.match?.wala?.totalBets,
+            currentMatch?.match?.wala?.totalBets
+          )}
+        </p>
       </Col>
     </Row>
   );

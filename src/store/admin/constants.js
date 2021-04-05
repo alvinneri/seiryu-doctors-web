@@ -3,3 +3,4 @@ export const SET_USERS = "SET_USERS";
 export const SET_NUMBERS = "SET_NUMBERS";
 export const SET_BANKS = "SET_BANKS";
 export const SET_BET_HISTORY = "SET_BET_HISTORY";
+export const SET_CREDIT_REQUESTS = "SET_CREDIT_REQUESTS";

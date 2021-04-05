@@ -3,12 +3,14 @@ import {
   SET_TRANSACTION_ID,
   SET_REFERENCE_NO,
   SET_TRANSACTIONS,
+  SET_AMOUNT,
 } from "./constants";
 const initialState = {
   selectedUser: null,
   selectedTransactionId: null,
   selectedReferenceNo: null,
   transactions: [],
+  selectedAmount: null,
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -35,6 +37,12 @@ export default function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         transactions: payload,
+      };
+    }
+    case SET_AMOUNT: {
+      return {
+        ...state,
+        selectedAmount: payload,
       };
     }
 

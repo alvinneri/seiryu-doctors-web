@@ -75,6 +75,11 @@ export const SideNavigation = () => {
             path: "/banks",
           },
           {
+            name: "CREDIT REQUEST",
+            icon: <AuditOutlined />,
+            path: "/credit-request",
+          },
+          {
             name: "WITHDRAWAL REQUEST",
             icon: <AuditOutlined />,
             path: "/withdrawal-request",
