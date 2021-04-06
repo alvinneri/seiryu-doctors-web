@@ -76,7 +76,7 @@ const CreditRequests = () => {
 
   return (
     <div>
-      <h3>List Of Transactions</h3>
+      <h3>List Of Credit Request</h3>
       <Form onSubmit={search}>
         <Form.Item>
           <Input
