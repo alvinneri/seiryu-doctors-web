@@ -105,6 +105,12 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
           >
             CANCEL
           </Button>
+          <Button
+            onClick={() => updateStatus("LAST CALL")}
+            style={{ background: "orange", color: "white" }}
+          >
+            LAST CALL
+          </Button>
         </div>
         <div style={{ marginTop: "1em" }}>
           <p>CHOOSE A RESULT:</p>
@@ -151,6 +157,7 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
               currentMatch?.match?.wala?.totalBets,
             currentMatch?.match?.meron?.totalBets
           )}
+          %
         </p>
         <p>WALA: {currentMatch?.match?.wala?.totalBets}</p>
         <p>
@@ -160,6 +167,7 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
               currentMatch?.match?.wala?.totalBets,
             currentMatch?.match?.wala?.totalBets
           )}
+          %
         </p>
       </Col>
     </Row>

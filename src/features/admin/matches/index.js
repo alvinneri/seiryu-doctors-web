@@ -194,6 +194,7 @@ const Matches = () => {
       await db.collection("fights").add({
         ...currentMatch.match,
         date: new Date(),
+        categoryId: selectedCategory.id,
       });
 
       const categoriesRef = await db
