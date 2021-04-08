@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Layout, Row, Menu, Form, Input, Button, Typography } from "antd";
 import { db } from "../../../firebase/config";
 import { toast } from "react-toastify";
+import { useStore } from "react-redux";
 const { Header, Content, Sider } = Layout;
 
 export const Settings = () => {
@@ -10,6 +11,7 @@ export const Settings = () => {
   const [betMin, setBetMin] = useState(100);
   const [id, setDocId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [drawMultiplier, setDrawMultplier] = useState("");
 
   const onSubmit = async () => {
     setSubmitting(true);
@@ -18,12 +20,14 @@ export const Settings = () => {
         appPercentage,
         betLimits,
         betMin,
+        drawMultiplier,
       });
     } else {
       const appSettingRef = db.collection("app_settings").add({
         appPercentage,
         betLimits,
         betMin,
+        drawMultiplier,
       });
     }
     toast.success("App Settings Updated");
@@ -82,6 +86,14 @@ export const Settings = () => {
                   placeholder="Minimum Bet Allowed."
                   value={betMin}
                   onChange={(text) => setBetMin(text.target.value)}
+                />
+              </Form.Item>
+              <Form.Item>
+                <span>Draw Multiplier</span>
+                <Input
+                  placeholder="Multiplier for draw results."
+                  value={drawMultiplier}
+                  onChange={(text) => setDrawMultplier(text.target.value)}
                 />
               </Form.Item>
               <Form.Item>

@@ -95,6 +95,11 @@ export const SideNavigation = () => {
             path: "/bet-history",
           },
           {
+            name: "AUDIT",
+            icon: <AuditOutlined />,
+            path: "/audit",
+          },
+          {
             name: "SETTINGS",
             icon: <SettingOutlined />,
             path: "/app-settings",

@@ -52,6 +52,10 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
             totalBets: currentMatch?.match?.wala?.totalBets,
             betters: [...currentMatch?.match?.wala?.betters],
           },
+          draw: {
+            totalBets: currentMatch?.match?.draw?.totalBets,
+            betters: [...currentMatch?.match?.draw?.betters],
+          },
           number: currentMatch?.match?.number,
           result: currentMatch?.match?.result,
           name: currentMatch?.match?.name,
@@ -73,6 +77,10 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
           wala: {
             totalBets: currentMatch?.match?.wala?.totalBets,
             betters: [...currentMatch?.match?.wala?.betters],
+          },
+          draw: {
+            totalBets: currentMatch?.match?.draw?.totalBets,
+            betters: [...currentMatch?.match?.draw?.betters],
           },
           number: currentMatch?.match?.number,
           result: result,

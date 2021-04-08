@@ -15,6 +15,7 @@ import Withdraw from "../features/admin/withdraw";
 import BetHistory from "../features/admin/bethistory";
 import { Settings } from "../features/admin/settings";
 import CreditRequest from "../features/admin/creditRequest";
+import Audit from "../features/admin/audit";
 export const AdminRoutes = () => {
   return (
     <Switch>
@@ -31,6 +32,7 @@ export const AdminRoutes = () => {
       <PrivateRoute exact path={"/bet-history"} component={BetHistory} />
       <PrivateRoute exact path={"/app-settings"} component={Settings} />
       <PrivateRoute exact path={"/credit-request"} component={CreditRequest} />
+      <PrivateRoute exact path={"/audit"} component={Audit} />
     </Switch>
   );
 };

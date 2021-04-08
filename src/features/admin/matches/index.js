@@ -27,6 +27,7 @@ const Matches = () => {
   const [name, setName] = useState(null);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [matchNumber, setMatchNumber] = useState("");
+  const [drawMultiplier, setDrawMultplier] = useState("");
 
   const [appPercentage, setAppPercentage] = useState(0);
   const [betLimits, setBetLimits] = useState(10000);
@@ -38,6 +39,7 @@ const Matches = () => {
       snapshot.forEach((doc) => {
         setBetLimits(doc.data().betLimits);
         setAppPercentage(doc.data().appPercentage);
+        setDrawMultplier(doc.data().drawMultiplier);
         setDocId(doc.id);
       });
     });
@@ -156,6 +158,10 @@ const Matches = () => {
             totalBets: 0,
             betters: [],
           },
+          draw: {
+            totalBets: 0,
+            betters: [],
+          },
         },
         isProcessed: false,
       })
@@ -223,7 +229,7 @@ const Matches = () => {
           });
         });
         toast.success("All bets were processed successfully.");
-      } else {
+      } else if (currentMatch.match.result === "WALA") {
         currentMatch.match.wala.betters.forEach(async (item) => {
           const userRef = await db.collection("users").doc(item.user);
           const user = await userRef.get();
@@ -242,6 +248,16 @@ const Matches = () => {
           });
         });
         toast.success("All bets were processed successfully.");
+      } else if (currentMatch.match.result === "DRAW") {
+        currentMatch.match.draw.betters.forEach(async (item) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + drawMultiplier * item.amount,
+          });
+        });
       }
 
       // deleteMatch();

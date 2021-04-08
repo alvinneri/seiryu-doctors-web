@@ -13,26 +13,30 @@ import {
   Row,
   Col,
   Popconfirm,
+  Table,
+  Tag,
+  Space,
 } from "antd";
 
 import CurrentMatch from "./CurrentMatch";
 import { toast } from "react-toastify";
+import { columns } from "./Columns";
 
 const { Header, Content } = Layout;
 
-const Matches = () => {
+const Audit = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.public);
   const { categories } = useSelector((state) => state.admin);
-  const [categoryName, setCategoryName] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [name, setName] = useState(null);
-  const [currentMatch, setCurrentMatch] = useState(null);
+  const [history, setHistory] = useState([]);
   const [matchNumber, setMatchNumber] = useState("");
+  const [drawMultiplier, setDrawMultplier] = useState("");
+  const [currentMatch, setCurrentMatch] = useState("");
 
   const [appPercentage, setAppPercentage] = useState(0);
   const [betLimits, setBetLimits] = useState(10000);
   const [id, setDocId] = useState(null);
-  const [drawMultiplier, setDrawMultplier] = useState("");
 
   const getAppSettings = async () => {
     const appSettingRef = db.collection("app_settings");
@@ -52,33 +56,80 @@ const Matches = () => {
     getAppSettings();
   }, []);
 
-  useEffect(() => {
-    getCurrentMatch();
-  }, []);
+  const getCategories = async () => {
+    const categoriesRef = await db.collection("categories");
 
-  const getCurrentMatch = async () => {
-    const categoriesRef = await db
-      .collection("categories")
-      .doc(user.controllerCategory);
-    const unsubcribed = categoriesRef.onSnapshot((doc) => {
-      setCategoryName(doc.data().name);
-
-      if (doc?.data()?.match) {
-        setCurrentMatch({
-          ...doc?.data(),
+    const unsubcribed = categoriesRef.onSnapshot((snapshot) => {
+      let _categories = [];
+      snapshot.forEach((doc) => {
+        let docs = {
+          ...doc.data(),
           id: doc.id,
-        });
-      } else {
-        setCurrentMatch(null);
-      }
+        };
+        _categories.push(docs);
+      });
+      dispatch(setCategories(_categories));
     });
     return unsubcribed;
   };
 
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      getMatchHistories();
+    }
+  }, [selectedCategory]);
+
+  const getMatchHistories = async () => {
+    const categoriesRef = await db
+      .collection("fights")
+      .where("categoryId", "==", selectedCategory.id)
+      .orderBy("date", "desc");
+
+    const unsubcribed = categoriesRef.onSnapshot((snapshot) => {
+      let _histories = [];
+      if (snapshot.docs.length) {
+        snapshot.forEach((doc) => {
+          console.log(doc.data());
+          if (doc?.data()) {
+            _histories.push({
+              ...doc?.data(),
+              totalBets:
+                doc.data().wala?.totalBets +
+                doc.data().draw?.totalBets +
+                doc.data().meron?.totalBets,
+              id: doc.id,
+            });
+          }
+        });
+      } else {
+        setHistory([]);
+      }
+      console.log(_histories);
+      setHistory(_histories);
+    });
+    return unsubcribed;
+  };
+
+  const Categories = (
+    <Menu>
+      {categories.map((item, index) => {
+        return (
+          <Menu.Item key={index} onClick={() => setSelectedCategory(item)}>
+            <p>{item.name}</p>
+          </Menu.Item>
+        );
+      })}
+    </Menu>
+  );
+
   const deleteMatch = async () => {
     const categoriesRef = await db
       .collection("categories")
-      .doc(user.controllerCategory)
+      .doc(selectedCategory.id)
       .update({
         match: null,
       })
@@ -98,10 +149,14 @@ const Matches = () => {
       toast.error("Match Number is required.");
       return;
     }
+    if (!selectedCategory) {
+      toast.error("Category is required.");
+      return;
+    }
 
     const categoriesRef = await db
       .collection("categories")
-      .doc(user.controllerCategory)
+      .doc(selectedCategory.id)
       .update({
         match: {
           name: name,
@@ -158,12 +213,12 @@ const Matches = () => {
       await db.collection("fights").add({
         ...currentMatch.match,
         date: new Date(),
-        categoryId: user.controllerCategory,
+        categoryId: selectedCategory.id,
       });
 
       const categoriesRef = await db
         .collection("categories")
-        .doc(user.controllerCategory)
+        .doc(selectedCategory.id)
         .update({
           isProcessed: true,
         });
@@ -199,7 +254,7 @@ const Matches = () => {
               (getPayout(
                 currentMatch?.match?.meron?.totalBets +
                   currentMatch?.match?.wala?.totalBets,
-                currentMatch?.match?.meron?.totalBets
+                currentMatch?.match?.wala?.totalBets
               ) /
                 100) *
                 item.amount,
@@ -226,7 +281,12 @@ const Matches = () => {
     <Layout style={{ height: "100%" }}>
       <Header>
         <Menu theme="dark" mode="horizontal">
-          <p>Category: {categoryName}</p>
+          <Dropdown overlay={Categories}>
+            <p className="ant-dropdown-link">
+              {selectedCategory ? selectedCategory.name : "Select Category"}{" "}
+              <DownOutlined />
+            </p>
+          </Dropdown>
         </Menu>
       </Header>
       <Layout>
@@ -234,52 +294,7 @@ const Matches = () => {
           style={{ margin: "24px 16px 0", height: "100%", overflow: "scroll" }}
         >
           <div className="site-layout-background" style={{ padding: 24 }}>
-            <Row>
-              <Col span={8}>
-                <div>
-                  <Form>
-                    <Form.Item>
-                      <Input
-                        placeholder="Match Name"
-                        value={name}
-                        onChange={(text) => setName(text.target.value)}
-                      />
-                    </Form.Item>
-                    <Form.Item>
-                      <Input
-                        placeholder="Match Number"
-                        value={matchNumber}
-                        onChange={(text) => setMatchNumber(text.target.value)}
-                      />
-                    </Form.Item>
-
-                    <Form.Item>
-                      <Popconfirm
-                        title="Do you want to create a new match? Creating a new match will replace the current live match. "
-                        onConfirm={createNewMatch}
-                        onCancel={null}
-                        okText="Yes"
-                        cancelText="No"
-                      >
-                        <Button type="primary">NEW MATCH</Button>
-                      </Popconfirm>
-                    </Form.Item>
-                  </Form>
-                </div>
-              </Col>
-            </Row>
-
-            {currentMatch ? (
-              <CurrentMatch
-                currentMatch={currentMatch}
-                deleteMatch={deleteMatch}
-              />
-            ) : (
-              <p>No matches for this category</p>
-            )}
-            <Button type="danger" onClick={processCredits}>
-              PROCESS CREDITS
-            </Button>
+            <Table columns={columns} dataSource={history} />
           </div>
         </Content>
       </Layout>
@@ -287,4 +302,4 @@ const Matches = () => {
   );
 };
 
-export default Matches;
+export default Audit;
