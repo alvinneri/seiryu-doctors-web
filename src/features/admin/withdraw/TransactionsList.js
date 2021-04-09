@@ -102,13 +102,16 @@ const Transactions = () => {
                   <p>{`Date: ${moment(item.date.toDate()).format(
                     "MMM DD YYYY h:mm A"
                   )}`}</p>
-                  <p>{`User Name: ${item.name}`}</p>
+                  <p>{`User Name: ${item?.name ? item.name : "None"}`}</p>
                   <p>{`Status: ${item.status}`}</p>
                   <p>{`Option: ${item.option}`}</p>
                   <p>{`Bank/Gcash Number: ${
                     item.option !== "Gcash"
                       ? item.bank_account
                       : item.gcash_number
+                  }`}</p>
+                  <p>{`Other Details: ${
+                    item?.others ? item?.others : "None"
                   }`}</p>
                   <Form.Item>
                     <Input
