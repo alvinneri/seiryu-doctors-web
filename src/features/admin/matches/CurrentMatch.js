@@ -38,8 +38,8 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
     return afterCut.toFixed(2);
   };
 
-  const updateStatus = (status) => {
-    const matchRef = db
+  const updateStatus = async (status) => {
+    const matchRef = await db
       .collection("categories")
       .doc(currentMatch.id)
       .update({
@@ -64,12 +64,38 @@ const CurrentMatch = ({ currentMatch, deleteMatch }) => {
       });
 
     if (status === "CANCELLED") {
-      updateResult("CANCELLED");
+      await updateResultToCancel("CANCELLED");
     }
   };
 
-  const updateResult = (result) => {
-    const matchRef = db
+  const updateResultToCancel = async (result) => {
+    const matchRef = await db
+      .collection("categories")
+      .doc(currentMatch.id)
+      .update({
+        match: {
+          meron: {
+            totalBets: currentMatch?.match?.meron?.totalBets,
+            betters: [...currentMatch?.match?.meron?.betters],
+          },
+          wala: {
+            totalBets: currentMatch?.match?.wala?.totalBets,
+            betters: [...currentMatch?.match?.wala?.betters],
+          },
+          draw: {
+            totalBets: currentMatch?.match?.draw?.totalBets,
+            betters: [...currentMatch?.match?.draw?.betters],
+          },
+          number: currentMatch?.match?.number,
+          result: result,
+          name: currentMatch?.match?.name,
+          status: result,
+        },
+      });
+  };
+
+  const updateResult = async (result) => {
+    const matchRef = await db
       .collection("categories")
       .doc(currentMatch.id)
       .update({
