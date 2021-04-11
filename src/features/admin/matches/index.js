@@ -230,7 +230,7 @@ const Matches = () => {
         });
         toast.success("All bets were processed successfully.");
       } else if (currentMatch.match.result === "WALA") {
-        currentMatch.match.wala.betters.forEach(async (item) => {
+        await currentMatch.match.wala.betters.forEach(async (item) => {
           const userRef = await db.collection("users").doc(item.user);
           const user = await userRef.get();
           const credits = user.data()?.credits ? user.data()?.credits : 0;
@@ -249,7 +249,7 @@ const Matches = () => {
         });
         toast.success("All bets were processed successfully.");
       } else if (currentMatch.match.result === "DRAW") {
-        currentMatch.match.draw.betters.forEach(async (item) => {
+        await currentMatch.match.draw.betters.forEach(async (item) => {
           const userRef = await db.collection("users").doc(item.user);
           const user = await userRef.get();
           const credits = user.data()?.credits ? user.data()?.credits : 0;
@@ -258,6 +258,37 @@ const Matches = () => {
             credits: credits + drawMultiplier * item.amount,
           });
         });
+        toast.success("All bets were processed successfully.");
+      } else if (currentMatch.match.result === "CANCELLED") {
+        await currentMatch.match.wala.betters.forEach(async (item) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + item.amount,
+          });
+        });
+        await currentMatch.match.meron.betters.forEach(async (item, index) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + item.amount,
+          });
+        });
+        await currentMatch.match.draw.betters.forEach(async (item) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + item.amount,
+          });
+        });
+
+        toast.success("All bets were processed successfully.");
       }
 
       // deleteMatch();

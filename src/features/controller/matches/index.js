@@ -216,6 +216,36 @@ const Matches = () => {
             credits: credits + drawMultiplier * item.amount,
           });
         });
+      } else if (currentMatch.match.result === "CANCELLED") {
+        await currentMatch.match.wala.betters.forEach(async (item) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + item.amount,
+          });
+        });
+        await currentMatch.match.meron.betters.forEach(async (item, index) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + item.amount,
+          });
+        });
+        await currentMatch.match.draw.betters.forEach(async (item) => {
+          const userRef = await db.collection("users").doc(item.user);
+          const user = await userRef.get();
+          const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+          await userRef.update({
+            credits: credits + item.amount,
+          });
+        });
+
+        toast.success("All bets were processed successfully.");
       }
 
       // deleteMatch();

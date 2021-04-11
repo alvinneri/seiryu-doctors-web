@@ -39,6 +39,7 @@ export const Settings = () => {
     const unsubscribe = appSettingRef.onSnapshot((snapshot) => {
       snapshot.forEach((doc) => {
         setBetLimits(doc.data().betLimits);
+        setBetMin(doc.data().betMin);
         setAppPercentage(doc.data().appPercentage);
         setDocId(doc.id);
       });
