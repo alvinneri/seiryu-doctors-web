@@ -41,6 +41,7 @@ export const Settings = () => {
         setBetLimits(doc.data().betLimits);
         setBetMin(doc.data().betMin);
         setAppPercentage(doc.data().appPercentage);
+        setDrawMultplier(doc.data().drawMultiplier);
         setDocId(doc.id);
       });
     });
