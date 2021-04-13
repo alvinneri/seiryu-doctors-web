@@ -79,6 +79,7 @@ const Categories = () => {
           <div>
             <p>{`Name: ${item.name}`}</p>
             <p>{`Email: ${item.email}`}</p>
+            <p>{`Credits: ${item.credits}`}</p>
             <p>{`Usertype: ${item.userType}`}</p>
           </div>
         </List.Item>

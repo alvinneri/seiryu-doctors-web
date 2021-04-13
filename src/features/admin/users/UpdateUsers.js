@@ -11,13 +11,14 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
   const { users } = useSelector((state) => state.admin);
   const [name, setName] = useState("");
   const [userType, setUserType] = useState("");
+  const [credits, setCredits] = useState(0);
   const [id, setId] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(item);
     setName(item?.name);
     setUserType(item?.userType);
+    setCredits(item?.credits);
     setId(item?.id);
   }, [item]);
 
@@ -32,6 +33,7 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
         await db.collection("users").doc(id).update({
           name: name,
           userType: userType,
+          credits: credits,
         });
         setVisible(false);
         toast.success("User Updated");
@@ -59,6 +61,13 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
             placeholder="Name"
             value={name}
             onChange={(text) => setName(text.target.value)}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Input
+            placeholder="Credits"
+            value={credits}
+            onChange={(text) => setCredits(text.target.value)}
           />
         </Form.Item>
         <Form.Item>
