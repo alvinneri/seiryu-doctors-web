@@ -110,6 +110,10 @@ const Transactions = () => {
                       ? item.bank_account
                       : item.gcash_number
                   }`}</p>
+                  {item.option !== "Gcash" && (
+                    <p>{`Bank: ${item.bank_name}`}</p>
+                  )}
+
                   <p>{`Other Details: ${
                     item?.others ? item?.others : "None"
                   }`}</p>

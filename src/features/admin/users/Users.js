@@ -23,7 +23,7 @@ const Categories = () => {
   );
 
   const _search = async () => {
-    const usersRef = await db.collection("users").where("name", "==", name);
+    const usersRef = await db.collection("users").where("email", "==", name);
     const unsubcribed = usersRef.onSnapshot((snapshot) => {
       let _users = [];
       snapshot.forEach((doc) => {
@@ -106,7 +106,7 @@ const Categories = () => {
       <Form onSubmit={search}>
         <Form.Item>
           <Input
-            placeholder="Name of User"
+            placeholder="Email of User"
             value={name}
             onChange={(text) => setName(text.target.value)}
           />
