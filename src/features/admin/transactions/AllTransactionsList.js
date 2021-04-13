@@ -4,6 +4,8 @@ import { setTransactions } from "../../../store/loader/actions";
 import { db } from "../../../firebase/config";
 import { List, Typography, Divider, Input, Button, Form } from "antd";
 import moment from "moment";
+import { usePagination } from "use-pagination-firestore";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 
 const AllTransactions = () => {
   const dispatch = useDispatch();
@@ -12,10 +14,17 @@ const AllTransactions = () => {
   const [refNo, setRefNo] = useState("");
   const [trans, setTrans] = useState([]);
 
-  const getTransactions = async () => {
+  const { items, isLoading, isStart, isEnd, getPrev, getNext } = usePagination(
+    db.collection("loader_transactions").orderBy("date", "desc"),
+    {
+      limit: 10,
+    }
+  );
+
+  const _search = async () => {
     const transactionsRef = db.collection("loader_transactions");
 
-    const snapshot = await transactionsRef.orderBy("date", "desc").get();
+    const snapshot = await transactionsRef.where("refNo", "==", refNo).get();
 
     if (snapshot.empty) {
       dispatch(setTransactions([]));
@@ -33,9 +42,31 @@ const AllTransactions = () => {
     dispatch(setTransactions(docs));
   };
 
+  // const getTransactions = async () => {
+  //   const transactionsRef = db.collection("loader_transactions");
+
+  //   const snapshot = await transactionsRef.orderBy("date", "desc").get();
+
+  //   if (snapshot.empty) {
+  //     dispatch(setTransactions([]));
+  //     return;
+  //   }
+
+  //   let docs = [];
+  //   snapshot.forEach(async (doc) => {
+  //     docs.push({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     });
+  //   });
+  //   setTrans(docs);
+  //   dispatch(setTransactions(docs));
+  // };
+
   useEffect(() => {
-    getTransactions();
-  }, []);
+    // getTransactions();
+    setTrans(items);
+  }, [items]);
 
   const Item = ({ item }) => {
     return (
@@ -59,12 +90,12 @@ const AllTransactions = () => {
 
   const search = () => {
     if (!refNo) {
-      getTransactions();
+      setTrans(items);
       return;
     }
-    const result = transactions.filter((item) => item.refNo === refNo);
-    setTrans(result);
-    console.log(refNo);
+    _search(refNo);
+    // const result = items.filter((item) => item.refNo === refNo);
+    // setTrans(result);
   };
 
   return (
@@ -85,12 +116,27 @@ const AllTransactions = () => {
         </Form.Item>
       </Form>
       <List
-        style={{ height: "54vh", overflow: "scroll" }}
+        style={{ height: "40vh", overflow: "scroll" }}
         size="small"
         bordered
         dataSource={trans}
         renderItem={(item) => <Item item={item} />}
       />
+      <div
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+          margin: "1em",
+        }}
+      >
+        <Button onClick={getPrev} disabled={isStart}>
+          PREV <LeftOutlined />
+        </Button>
+        <Button onClick={getNext} disabled={isEnd}>
+          NEXT <RightOutlined />
+        </Button>
+      </div>
     </div>
   );
 };

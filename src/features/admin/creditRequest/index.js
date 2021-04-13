@@ -4,6 +4,8 @@ import { setCreditRequests } from "../../../store/admin/actions";
 import { db } from "../../../firebase/config";
 import { List, Typography, Divider, Input, Button, Form } from "antd";
 import moment from "moment";
+import { usePagination } from "use-pagination-firestore";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 
 const CreditRequests = () => {
   const dispatch = useDispatch();
@@ -12,13 +14,24 @@ const CreditRequests = () => {
   const [refNo, setRefNo] = useState("");
   const [trans, setTrans] = useState([]);
 
-  const getCreditRequests = async () => {
+  const { items, isLoading, isStart, isEnd, getPrev, getNext } = usePagination(
+    db
+      .collection("transactions")
+      .orderBy("date", "desc")
+      .where("status", "==", "PENDING")
+      .where("type", "==", "DEPOSIT"),
+    {
+      limit: 10,
+    }
+  );
+
+  const _search = async (refNo) => {
     const transactionsRef = db.collection("transactions");
 
     const unsubscribed = await transactionsRef
-      .orderBy("date", "desc")
       .where("status", "==", "PENDING")
       .where("type", "==", "DEPOSIT")
+      .where("refNo", "==", refNo)
       .onSnapshot((snapshot) => {
         console.log(snapshot.docs.length);
         if (snapshot.empty) {
@@ -41,9 +54,39 @@ const CreditRequests = () => {
     return unsubscribed;
   };
 
+  // const getCreditRequests = async () => {
+  //   const transactionsRef = db.collection("transactions");
+
+  //   const unsubscribed = await transactionsRef
+  //     .orderBy("date", "desc")
+  //     .where("status", "==", "PENDING")
+  //     .where("type", "==", "DEPOSIT")
+  //     .onSnapshot((snapshot) => {
+  //       console.log(snapshot.docs.length);
+  //       if (snapshot.empty) {
+  //         dispatch(setCreditRequests([]));
+  //         return;
+  //       }
+
+  //       let docs = [];
+  //       snapshot.forEach(async (doc) => {
+  //         docs.push({
+  //           ...doc.data(),
+  //           id: doc.id,
+  //         });
+  //       });
+  //       console.log(docs);
+  //       setTrans(docs);
+  //       dispatch(setCreditRequests(docs));
+  //     });
+
+  //   return unsubscribed;
+  // };
+
   useEffect(() => {
-    getCreditRequests();
-  }, []);
+    // getCreditRequests();
+    setTrans(items);
+  }, [items]);
 
   const Item = ({ item }) => {
     return (
@@ -66,12 +109,11 @@ const CreditRequests = () => {
 
   const search = () => {
     if (!refNo) {
-      getCreditRequests();
+      setTrans(items);
+      // getCreditRequests();
       return;
     }
-    const result = creditRequest.filter((item) => item.refNo === refNo);
-    setTrans(result);
-    console.log(refNo);
+    _search(refNo);
   };
 
   return (
@@ -92,12 +134,27 @@ const CreditRequests = () => {
         </Form.Item>
       </Form>
       <List
-        style={{ height: "54vh", overflow: "scroll" }}
+        style={{ height: "45vh", overflow: "scroll" }}
         size="small"
         bordered
         dataSource={trans}
         renderItem={(item) => <Item item={item} />}
       />
+      <div
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+          margin: "1em",
+        }}
+      >
+        <Button onClick={getPrev} disabled={isStart}>
+          PREV <LeftOutlined />
+        </Button>
+        <Button onClick={getNext} disabled={isEnd}>
+          NEXT <RightOutlined />
+        </Button>
+      </div>
     </div>
   );
 };

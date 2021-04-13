@@ -2,37 +2,46 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBetHistory } from "../../../store/admin/actions";
 import { db } from "../../../firebase/config";
-import { List, Typography, Divider, Input, Button, Form } from "antd";
+import { List, Divider, Button } from "antd";
 import moment from "moment";
+import { usePagination } from "use-pagination-firestore";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 
 const BetHistory = () => {
   const dispatch = useDispatch();
   const { betHistory } = useSelector((state) => state.admin);
   const { user } = useSelector((state) => state.public);
 
-  const getBetsHistory = async () => {
-    const betRef = db.collection("bet_history");
-    const snapshot = await betRef.orderBy("date", "desc").get();
-
-    if (snapshot.empty) {
-      dispatch(setBetHistory([]));
-      return;
+  const { items, isLoading, isStart, isEnd, getPrev, getNext } = usePagination(
+    db.collection("bet_history").orderBy("date", "desc"),
+    {
+      limit: 10,
     }
+  );
 
-    let docs = [];
-    snapshot.forEach(async (doc) => {
-      docs.push({
-        ...doc.data(),
-        id: doc.id,
-      });
-    });
-    console.log(docs);
-    dispatch(setBetHistory(docs));
-  };
+  // const getBetsHistory = async () => {
+  //   const betRef = db.collection("bet_history");
+  //   const snapshot = await betRef.orderBy("date", "desc").get();
 
-  useEffect(() => {
-    getBetsHistory();
-  }, []);
+  //   if (snapshot.empty) {
+  //     dispatch(setBetHistory([]));
+  //     return;
+  //   }
+
+  //   let docs = [];
+  //   snapshot.forEach(async (doc) => {
+  //     docs.push({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     });
+  //   });
+  //   console.log(docs);
+  //   dispatch(setBetHistory(docs));
+  // };
+
+  // useEffect(() => {
+  //   getBetsHistory();
+  // }, []);
 
   const Item = ({ item }) => {
     return (
@@ -60,9 +69,24 @@ const BetHistory = () => {
         style={{ height: "70vh", overflow: "scroll" }}
         size="small"
         bordered
-        dataSource={betHistory}
+        dataSource={items}
         renderItem={(item) => <Item item={item} />}
       />
+      <div
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+          margin: "1em",
+        }}
+      >
+        <Button onClick={getPrev} disabled={isStart}>
+          PREV <LeftOutlined />
+        </Button>
+        <Button onClick={getNext} disabled={isEnd}>
+          NEXT <RightOutlined />
+        </Button>
+      </div>
     </div>
   );
 };
