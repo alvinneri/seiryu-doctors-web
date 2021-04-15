@@ -100,6 +100,11 @@ export const SideNavigation = () => {
             path: "/audit",
           },
           {
+            name: "CONTACTS PAGE",
+            icon: <SettingOutlined />,
+            path: "/contacts-page",
+          },
+          {
             name: "SETTINGS",
             icon: <SettingOutlined />,
             path: "/app-settings",
