@@ -8,7 +8,7 @@ export const PublicRoutes = () => {
   return (
     <Switch>
       <Route exact path={"/"} component={Login} />
-      <Route exact path={"/twitch"} component={Twitch} />
+      <Route exact path={"/public/twitch"} component={Twitch} />
     </Switch>
   );
 };
