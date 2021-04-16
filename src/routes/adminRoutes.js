@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { PrivateRoute } from "../app/routes/PrivateRoute";
 
 import Home from "../features/admin/Home";
@@ -16,6 +16,7 @@ import BetHistory from "../features/admin/bethistory";
 import { Settings } from "../features/admin/settings";
 import CreditRequest from "../features/admin/creditRequest";
 import Audit from "../features/admin/audit";
+import Twitch from "../features/admin/twitch";
 export const AdminRoutes = () => {
   return (
     <Switch>
@@ -33,6 +34,7 @@ export const AdminRoutes = () => {
       <PrivateRoute exact path={"/app-settings"} component={Settings} />
       <PrivateRoute exact path={"/credit-request"} component={CreditRequest} />
       <PrivateRoute exact path={"/audit"} component={Audit} />
+      <Route exact path={"/twitch"} component={Twitch} />
     </Switch>
   );
 };

@@ -10,6 +10,7 @@ const Twitch = () => {
         layout={"video"}
         width={"100%"}
         autoplay={true}
+        height={"650px"}
       />
     </div>
   );

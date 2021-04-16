@@ -105,6 +105,11 @@ export const SideNavigation = () => {
             path: "/app-settings",
           },
           {
+            name: "TWITCH",
+            icon: <SettingOutlined />,
+            path: "/twitch",
+          },
+          {
             name: "LOG OUT",
             icon: <LogoutOutlined />,
             path: "/",
