@@ -5,7 +5,7 @@ const Twitch = () => {
   return (
     <div>
       <ReactTwitchEmbedVideo
-        channel="jovian"
+        channel="Acailum101" // should be dynamic
         chat={"undefined"}
         layout={"video"}
         width={"100%"}
