@@ -9,11 +9,13 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [id, setId] = useState("");
+  const [twitchUrl, setTwitchUrl] = useState("");
 
   useEffect(() => {
     setName(item?.name);
     setUrl(item?.url);
     setId(item?.id);
+    setTwitchUrl(item?.twitchUrl);
   }, [item]);
 
   const submit = async () => {
@@ -22,9 +24,11 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
         await db.collection("categories").doc(id).update({
           name: name,
           url: url,
+          twitchUrl: twitchUrl,
         });
         setUrl("");
         setName("");
+        setTwitchUrl("");
         setVisible(false);
         toast.success("Category Updated");
       } catch (err) {
@@ -52,9 +56,16 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
         </Form.Item>
         <Form.Item>
           <Input
-            placeholder="Url"
+            placeholder="Youtube Url"
             value={url}
             onChange={(text) => setUrl(text.target.value)}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Input
+            placeholder="Twitch Url"
+            value={twitchUrl}
+            onChange={(text) => setTwitchUrl(text.target.value)}
           />
         </Form.Item>
       </Form>

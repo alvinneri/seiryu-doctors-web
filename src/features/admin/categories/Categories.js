@@ -44,7 +44,8 @@ const Categories = () => {
         >
           <div>
             <p>{`Name: ${item.name}`}</p>
-            <p>{`Url: ${item.url}`}</p>
+            <p>{`Youtube Url: ${item.url}`}</p>
+            <p>{`Twitch Url: ${item?.twitchUrl ? item?.twitchUrl : "None"}`}</p>
           </div>
         </List.Item>
         <Divider />

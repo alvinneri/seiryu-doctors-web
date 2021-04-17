@@ -28,6 +28,9 @@ const Matches = () => {
   const [currentMatch, setCurrentMatch] = useState(null);
   const [matchNumber, setMatchNumber] = useState("");
   const [drawMultiplier, setDrawMultplier] = useState("");
+  const [videoType, setVideoType] = useState("");
+  const [twitchUrl, setTwitchUrl] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
 
   const [appPercentage, setAppPercentage] = useState(0);
   const [betLimits, setBetLimits] = useState(10000);
@@ -94,6 +97,9 @@ const Matches = () => {
           ...doc?.data(),
           id: doc.id,
         });
+        setTwitchUrl(doc.data().twitchUrl);
+        setYoutubeUrl(doc.data().url);
+        setVideoType(doc.data().videoType);
       } else {
         setCurrentMatch(null);
       }
@@ -295,6 +301,24 @@ const Matches = () => {
     }
   };
 
+  const setToTwitch = async () => {
+    const categoriesRef = await db
+      .collection("categories")
+      .doc(selectedCategory.id)
+      .update({
+        videoType: "twitch",
+      });
+  };
+
+  const setToYoutube = async () => {
+    const categoriesRef = await db
+      .collection("categories")
+      .doc(selectedCategory.id)
+      .update({
+        videoType: "youtube",
+      });
+  };
+
   return (
     <Layout style={{ height: "100%" }}>
       <Header>
@@ -330,18 +354,57 @@ const Matches = () => {
                         onChange={(text) => setMatchNumber(text.target.value)}
                       />
                     </Form.Item>
-
-                    <Form.Item>
-                      <Popconfirm
-                        title="Do you want to create a new match? Creating a new match will replace the current live match. "
-                        onConfirm={createNewMatch}
-                        onCancel={null}
-                        okText="Yes"
-                        cancelText="No"
-                      >
-                        <Button type="primary">NEW MATCH</Button>
-                      </Popconfirm>
-                    </Form.Item>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <Form.Item>
+                        <Popconfirm
+                          title="Do you want to create a new match? Creating a new match will replace the current live match. "
+                          onConfirm={createNewMatch}
+                          onCancel={null}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <Button type="primary">NEW MATCH</Button>
+                        </Popconfirm>
+                      </Form.Item>
+                      {twitchUrl && (
+                        <Form.Item style={{ marginLeft: "1em" }}>
+                          <Popconfirm
+                            disabled={videoType === "twitch" ? true : false}
+                            title="Switch video type to twitch?. "
+                            onConfirm={setToTwitch}
+                            onCancel={null}
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <Button
+                              type="success"
+                              disabled={videoType === "twitch" ? true : false}
+                            >
+                              TWITCH
+                            </Button>
+                          </Popconfirm>
+                        </Form.Item>
+                      )}
+                      {youtubeUrl && (
+                        <Form.Item style={{ marginLeft: "1em" }}>
+                          <Popconfirm
+                            disabled={videoType === "youtube" ? true : false}
+                            title="Switch video type to youtube?. "
+                            onConfirm={setToYoutube}
+                            onCancel={null}
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <Button
+                              type="danger"
+                              disabled={videoType === "youtube" ? true : false}
+                            >
+                              YOUTUBE
+                            </Button>
+                          </Popconfirm>
+                        </Form.Item>
+                      )}
+                    </div>
                   </Form>
                 </div>
               </Col>

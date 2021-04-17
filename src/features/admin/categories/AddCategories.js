@@ -8,6 +8,7 @@ const AddCategories = ({ visible, setVisible }) => {
   const { categories } = useSelector((state) => state.admin);
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
+  const [twitchUrl, setTwitchUrl] = useState("");
 
   const submit = async () => {
     const uniq = categories.filter((item) => item.name === name);
@@ -22,9 +23,12 @@ const AddCategories = ({ visible, setVisible }) => {
         await db.collection("categories").add({
           name: name,
           url: url,
+          twitchUrl: twitchUrl,
+          videoType: "youtube",
         });
         setUrl("");
         setName("");
+        setTwitchUrl("");
         setVisible(false);
         toast.success("Category Added");
       } catch (err) {
@@ -52,9 +56,16 @@ const AddCategories = ({ visible, setVisible }) => {
         </Form.Item>
         <Form.Item>
           <Input
-            placeholder="Url"
+            placeholder="Youtube Url"
             value={url}
             onChange={(text) => setUrl(text.target.value)}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Input
+            placeholder="Twitch Url"
+            value={twitchUrl}
+            onChange={(text) => setTwitchUrl(text.target.value)}
           />
         </Form.Item>
       </Form>
