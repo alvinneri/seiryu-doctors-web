@@ -9,6 +9,7 @@ const Twitch = () => {
         chat={"undefined"}
         layout={"video"}
         width={"100%"}
+        height={"auto"}
         autoplay={true}
       />
     </div>
