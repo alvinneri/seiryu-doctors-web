@@ -12,6 +12,7 @@ export const Settings = () => {
   const [id, setDocId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [drawMultiplier, setDrawMultplier] = useState("");
+  const [twitchChannel, setTwitchChannel] = useState("");
 
   const onSubmit = async () => {
     setSubmitting(true);
@@ -21,6 +22,7 @@ export const Settings = () => {
         betLimits,
         betMin,
         drawMultiplier,
+        sabongTwitchChannel: twitchChannel,
       });
     } else {
       const appSettingRef = db.collection("app_settings").add({
@@ -28,6 +30,7 @@ export const Settings = () => {
         betLimits,
         betMin,
         drawMultiplier,
+        sabongTwitchChannel: twitchChannel,
       });
     }
     toast.success("App Settings Updated");
@@ -42,6 +45,7 @@ export const Settings = () => {
         setBetMin(doc.data().betMin);
         setAppPercentage(doc.data().appPercentage);
         setDrawMultplier(doc.data().drawMultiplier);
+        setTwitchChannel(doc.data().sabongTwitchChannel);
         setDocId(doc.id);
       });
     });
@@ -96,6 +100,14 @@ export const Settings = () => {
                   placeholder="Multiplier for draw results."
                   value={drawMultiplier}
                   onChange={(text) => setDrawMultplier(text.target.value)}
+                />
+              </Form.Item>
+              <Form.Item>
+                <span>Sabong Twitch Channel</span>
+                <Input
+                  placeholder="Sabong Twitch Channel."
+                  value={twitchChannel}
+                  onChange={(text) => setTwitchChannel(text.target.value)}
                 />
               </Form.Item>
               <Form.Item>
