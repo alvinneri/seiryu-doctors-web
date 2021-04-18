@@ -57,6 +57,7 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
     >
       <Form>
         <Form.Item>
+          <p>Name</p>
           <Input
             placeholder="Name"
             value={name}
@@ -64,6 +65,7 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
           />
         </Form.Item>
         <Form.Item>
+          <p>Credits</p>
           <Input
             placeholder="Credits"
             value={credits}
@@ -71,6 +73,7 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
           />
         </Form.Item>
         <Form.Item>
+          <p>Usertype</p>
           <Select value={userType} onChange={handleUserTypeChange}>
             <Option value="RECRUITER">Recruiter</Option>
             <Option value="LOADER">Loader</Option>

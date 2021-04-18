@@ -39,6 +39,13 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
     }
   };
 
+  const deleteCategory = async () => {
+    const res = await db.collection("categories").doc(id).delete();
+    setVisible(false);
+    toast.success("Category Succesffuly Deleted");
+    console.log(res);
+  };
+
   return (
     <Modal
       title="Update Category"
@@ -67,6 +74,14 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
             value={twitchUrl}
             onChange={(text) => setTwitchUrl(text.target.value)}
           />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            style={{ background: "red", color: "white" }}
+            onClick={deleteCategory}
+          >
+            Delete Category
+          </Button>
         </Form.Item>
       </Form>
     </Modal>

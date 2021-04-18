@@ -35,6 +35,12 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
     }
   };
 
+  const deleteNumber = async () => {
+    const res = await db.collection("gcash_numbers").doc(id).delete();
+    setVisible(false);
+    toast.success("Number Succesfully Deleted");
+  };
+
   return (
     <Modal
       title="Update Number"
@@ -56,6 +62,14 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
             value={phoneNumber}
             onChange={(text) => setPhoneNumber(text.target.value)}
           />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            style={{ background: "red", color: "white" }}
+            onClick={deleteNumber}
+          >
+            Delete Number
+          </Button>
         </Form.Item>
       </Form>
     </Modal>

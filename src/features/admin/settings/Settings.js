@@ -13,6 +13,7 @@ export const Settings = () => {
   const [submitting, setSubmitting] = useState(false);
   const [drawMultiplier, setDrawMultplier] = useState("");
   const [twitchChannel, setTwitchChannel] = useState("");
+  const [drawBetLimit, setDrawbetlimit] = useState(0);
 
   const onSubmit = async () => {
     setSubmitting(true);
@@ -45,6 +46,7 @@ export const Settings = () => {
         setBetMin(doc.data().betMin);
         setAppPercentage(doc.data().appPercentage);
         setDrawMultplier(doc.data().drawMultiplier);
+        setDrawbetlimit(doc.data().drawBetLimit);
         setTwitchChannel(doc.data().sabongTwitchChannel);
         setDocId(doc.id);
       });
@@ -100,6 +102,14 @@ export const Settings = () => {
                   placeholder="Multiplier for draw results."
                   value={drawMultiplier}
                   onChange={(text) => setDrawMultplier(text.target.value)}
+                />
+              </Form.Item>
+              <Form.Item>
+                <span>Maximum Draw Bet Allowed</span>
+                <Input
+                  placeholder="Draw Maximum Bet Amount."
+                  value={drawBetLimit}
+                  onChange={(text) => setDrawbetlimit(text.target.value)}
                 />
               </Form.Item>
               <Form.Item>

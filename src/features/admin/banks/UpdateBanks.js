@@ -39,6 +39,13 @@ const UpdateBank = ({ visible, setVisible, item }) => {
     }
   };
 
+  const deleteBank = async () => {
+    const res = await db.collection("banks").doc(id).delete();
+    setVisible(false);
+    toast.success("Bank Succesfully Deleted");
+    console.log(res);
+  };
+
   return (
     <Modal
       title="Update Bank"
@@ -67,6 +74,14 @@ const UpdateBank = ({ visible, setVisible, item }) => {
             value={name}
             onChange={(text) => setName(text.target.value)}
           />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            style={{ background: "red", color: "white" }}
+            onClick={deleteBank}
+          >
+            Delete Bank
+          </Button>
         </Form.Item>
       </Form>
     </Modal>
