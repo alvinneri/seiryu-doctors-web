@@ -24,6 +24,7 @@ export const Settings = () => {
         betMin,
         drawMultiplier,
         sabongTwitchChannel: twitchChannel,
+        drawBetLimit,
       });
     } else {
       const appSettingRef = db.collection("app_settings").add({
@@ -32,6 +33,7 @@ export const Settings = () => {
         betMin,
         drawMultiplier,
         sabongTwitchChannel: twitchChannel,
+        drawBetLimit,
       });
     }
     toast.success("App Settings Updated");
