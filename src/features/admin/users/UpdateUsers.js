@@ -30,11 +30,14 @@ const UpdateCategories = ({ visible, setVisible, item }) => {
     dispatch(setLoading(true));
     if (name && userType) {
       try {
-        await db.collection("users").doc(id).update({
-          name: name,
-          userType: userType,
-          credits: credits,
-        });
+        await db
+          .collection("users")
+          .doc(id)
+          .update({
+            name: name,
+            userType: userType,
+            credits: parseInt(credits),
+          });
         setVisible(false);
         toast.success("User Updated");
       } catch (err) {
