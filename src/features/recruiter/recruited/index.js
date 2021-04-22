@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../../firebase/config";
-import { List, Typography, Divider, Button } from "antd";
+import { List, Typography, Divider, Button, Table } from "antd";
 import { setRecruitedPlayers } from "../../../store/recruiter/actions";
 import { CopyFilled } from "@ant-design/icons";
+import { columns } from "./Columns";
+const { Text } = Typography;
 
 const RecruitedPlayers = () => {
   const dispatch = useDispatch();
@@ -15,15 +17,46 @@ const RecruitedPlayers = () => {
     const snapshot = await usersRef.where("invitedBy", "==", user.uid).get();
     if (!snapshot.empty) {
       let _users = [];
+      let _totals = 0;
+      snapshot.forEach(async (doc) => {
+        const betHistory = db.collection("bet_history");
+        const _snapshot = await betHistory
+          .where("uid", "==", doc.data().uid)
+          .get();
+        console.log(!_snapshot.empty, "!_snapshot.empty");
+        if (!_snapshot.empty) {
+          _snapshot.forEach((doc) => {
+            _totals = _totals + parseInt(doc.data().amount);
+            console.log(_totals, "_totals");
+          });
+        }
+        let docs = {
+          ...doc.data(),
+          id: doc.id,
+          total: _totals,
+        };
+        console.log(docs);
+        _users.push(docs);
+        dispatch(setRecruitedPlayers(_users));
+      });
+    }
+  };
+
+  const getTotalBets = async (uid) => {
+    let _totals = 0;
+    const betHistory = await db.collection("bet_history");
+    const snapshot = await betHistory.where("uid", "==", uid).get();
+    if (!snapshot.empty) {
       snapshot.forEach((doc) => {
         let docs = {
           ...doc.data(),
           id: doc.id,
         };
-        _users.push(docs);
+        _totals = _totals + parseInt(doc.data().amount);
       });
-      dispatch(setRecruitedPlayers(_users));
     }
+    console.log(_totals);
+    return _totals;
   };
 
   useEffect(() => {
@@ -38,6 +71,7 @@ const RecruitedPlayers = () => {
             <p>{`Name: ${item.name}`}</p>
             <p>{`Email: ${item.email}`}</p>
             <p>{`Usertype: ${item.userType}`}</p>
+            <p>{`Total:${getTotalBets(item.id)}`}</p>
           </div>
         </List.Item>
         <Divider />
@@ -61,12 +95,29 @@ const RecruitedPlayers = () => {
         COPY REFERRAL CODE
       </Button>
       <span>{user.uid}</span>
-      <List
-        size="small"
-        header={<h3>List Of Recruited Players</h3>}
-        bordered
+      <Table
+        columns={columns}
         dataSource={recruitedPlayers}
-        renderItem={(item) => <Item item={item} />}
+        summary={(pageData) => {
+          let totalBets = 0;
+
+          pageData.forEach(({ total }) => {
+            totalBets += total;
+          });
+
+          return (
+            <>
+              <Table.Summary.Row>
+                <Table.Summary.Cell>Total</Table.Summary.Cell>
+                <Table.Summary.Cell></Table.Summary.Cell>
+                <Table.Summary.Cell></Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Text type="danger">{totalBets}</Text>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </>
+          );
+        }}
       />
     </div>
   );
