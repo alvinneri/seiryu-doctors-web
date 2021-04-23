@@ -133,6 +133,12 @@ const Matches = () => {
       });
   };
 
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   const createNewMatch = async () => {
     if (!name) {
       toast.error("Match name is required.");
@@ -157,12 +163,22 @@ const Matches = () => {
           result: "PENDING",
           number: matchNumber,
           meron: {
-            totalBets: 0,
-            betters: [],
+            totalBets: getRandomInt(29000, 49000),
+            betters: [
+              {
+                user: "yqOXrFroD0erU2MjtBueN0mZekP2",
+                amount: getRandomInt(29000, 49000),
+              },
+            ],
           },
           wala: {
-            totalBets: 0,
-            betters: [],
+            totalBets: getRandomInt(29000, 49000),
+            betters: [
+              {
+                user: "zeSLpYokN7VwVpICsBpuucv4BJR2",
+                amount: getRandomInt(29000, 49000),
+              },
+            ],
           },
           draw: {
             totalBets: 0,
