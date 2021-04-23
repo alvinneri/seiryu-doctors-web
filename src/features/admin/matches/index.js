@@ -153,6 +153,12 @@ const Matches = () => {
       return;
     }
 
+    let min = Math.ceil(29000);
+    let max = Math.floor(49000);
+    let dummyBet = Math.floor(Math.random() * (max - min + 1)) + min;
+    let dummyBet2 =
+      dummyBet + Math.floor(Math.random() * (1400 - -1400 + 1)) + -1400;
+
     const categoriesRef = await db
       .collection("categories")
       .doc(selectedCategory.id)
@@ -163,20 +169,20 @@ const Matches = () => {
           result: "PENDING",
           number: matchNumber,
           meron: {
-            totalBets: getRandomInt(29000, 49000),
+            totalBets: dummyBet,
             betters: [
               {
                 user: "yqOXrFroD0erU2MjtBueN0mZekP2",
-                amount: getRandomInt(29000, 49000),
+                amount: dummyBet,
               },
             ],
           },
           wala: {
-            totalBets: getRandomInt(29000, 49000),
+            totalBets: dummyBet2,
             betters: [
               {
                 user: "zeSLpYokN7VwVpICsBpuucv4BJR2",
-                amount: getRandomInt(29000, 49000),
+                amount: dummyBet2,
               },
             ],
           },
