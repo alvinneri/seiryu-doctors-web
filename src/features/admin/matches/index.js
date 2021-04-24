@@ -153,12 +153,6 @@ const Matches = () => {
       return;
     }
 
-    let min = Math.ceil(29000);
-    let max = Math.floor(49000);
-    let dummyBet = Math.floor(Math.random() * (max - min + 1)) + min;
-    let dummyBet2 =
-      dummyBet + Math.floor(Math.random() * (1400 - -1400 + 1)) + -1400;
-
     const categoriesRef = await db
       .collection("categories")
       .doc(selectedCategory.id)
@@ -169,22 +163,12 @@ const Matches = () => {
           result: "PENDING",
           number: matchNumber,
           meron: {
-            totalBets: dummyBet,
-            betters: [
-              {
-                user: "yqOXrFroD0erU2MjtBueN0mZekP2",
-                amount: dummyBet,
-              },
-            ],
+            totalBets: 0,
+            betters: [],
           },
           wala: {
-            totalBets: dummyBet2,
-            betters: [
-              {
-                user: "zeSLpYokN7VwVpICsBpuucv4BJR2",
-                amount: dummyBet2,
-              },
-            ],
+            totalBets: 0,
+            betters: [],
           },
           draw: {
             totalBets: 0,
@@ -198,6 +182,58 @@ const Matches = () => {
         setName("");
         setMatchNumber("");
       });
+
+    let dummyBet = Math.floor(Math.random() * (24500 - 14500 + 1)) + 14500;
+    let dummyBet2 =
+      dummyBet + Math.floor(Math.random() * (700 - -700 + 1)) + -700;
+
+    setTimeout(async () => {
+      await db
+        .collection("categories")
+        .doc(selectedCategory.id)
+        .update({
+          "match.meron.totalBets": dummyBet,
+          "match.meron.betters": [
+            {
+              user: "yqOXrFroD0erU2MjtBueN0mZekP2",
+              amount: dummyBet,
+            },
+          ],
+          "match.wala.totalBets": dummyBet2,
+          "match.wala.betters": [
+            {
+              user: "yqOXrFroD0erU2MjtBueN0mZekP2",
+              amount: dummyBet2,
+            },
+          ],
+        });
+    }, 3000);
+
+    let dummyBet3 = Math.floor(Math.random() * (49000 - 29000 + 1)) + 29000;
+    let dummyBet4 =
+      dummyBet3 + Math.floor(Math.random() * (1400 - -1400 + 1)) + -1400;
+
+    setTimeout(async () => {
+      await db
+        .collection("categories")
+        .doc(selectedCategory.id)
+        .update({
+          "match.meron.totalBets": dummyBet3,
+          "match.meron.betters": [
+            {
+              user: "yqOXrFroD0erU2MjtBueN0mZekP2",
+              amount: dummyBet3,
+            },
+          ],
+          "match.wala.totalBets": dummyBet4,
+          "match.wala.betters": [
+            {
+              user: "yqOXrFroD0erU2MjtBueN0mZekP2",
+              amount: dummyBet4,
+            },
+          ],
+        });
+    }, 6000);
   };
 
   const getPayout = (totalBets, totalSides) => {
