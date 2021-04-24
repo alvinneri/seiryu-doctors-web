@@ -8,7 +8,7 @@ export default function reducer(state = initialState, { type, payload }) {
     case SET_RECRUITED_USERS: {
       return {
         ...state,
-        recruitedPlayers: payload,
+        recruitedPlayers: [...state.recruitedPlayers, payload] || [],
       };
     }
 

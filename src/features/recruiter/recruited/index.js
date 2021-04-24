@@ -11,19 +11,20 @@ const RecruitedPlayers = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.public);
   const { recruitedPlayers } = useSelector((state) => state.recruiter);
+  const [_users, setUsers] = useState([]);
 
   const getUsers = async () => {
     const usersRef = await db.collection("users");
     const snapshot = await usersRef.where("invitedBy", "==", user.uid).get();
+    // let _users = [];
+    let _totals = 0;
     if (!snapshot.empty) {
-      let _users = [];
-      let _totals = 0;
       snapshot.forEach(async (doc) => {
         const betHistory = db.collection("bet_history");
         const _snapshot = await betHistory
           .where("uid", "==", doc.data().uid)
           .get();
-        console.log(!_snapshot.empty, "!_snapshot.empty");
+
         if (!_snapshot.empty) {
           _snapshot.forEach((doc) => {
             _totals = _totals + parseInt(doc.data().amount);
@@ -35,11 +36,12 @@ const RecruitedPlayers = () => {
           id: doc.id,
           total: _totals,
         };
-        console.log(docs);
-        _users.push(docs);
-        dispatch(setRecruitedPlayers(_users));
+        // console.log(docs, "docs");
+        // setUsers([..._users, docs]);
+        dispatch(setRecruitedPlayers(docs));
       });
     }
+    // console.log(_users);
   };
 
   const getTotalBets = async (uid) => {
