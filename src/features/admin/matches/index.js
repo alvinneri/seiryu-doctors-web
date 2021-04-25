@@ -318,6 +318,28 @@ const Matches = () => {
           const user = await userRef.get();
           const credits = user.data()?.credits ? user.data()?.credits : 0;
 
+          await currentMatch.match.wala.betters.forEach(async (item) => {
+            const userRef = await db.collection("users").doc(item.user);
+            const user = await userRef.get();
+            const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+            await userRef.update({
+              credits: credits + item.amount,
+            });
+          });
+
+          await currentMatch.match.meron.betters.forEach(
+            async (item, index) => {
+              const userRef = await db.collection("users").doc(item.user);
+              const user = await userRef.get();
+              const credits = user.data()?.credits ? user.data()?.credits : 0;
+
+              await userRef.update({
+                credits: credits + item.amount,
+              });
+            }
+          );
+
           await userRef.update({
             credits: credits + drawMultiplier * item.amount,
           });
