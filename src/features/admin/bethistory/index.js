@@ -52,9 +52,11 @@ const BetHistory = () => {
               "MMM-DD-YYYY h:mm A"
             )}`}</p>
             <p>{`User Id: ${item.uid}`}</p>
+            <p>{`User Name: ${item?.name ? item?.name : "N/A"}`}</p>
             <p>{`Match Name: ${item.matchName}`}</p>
             <p>{`Match Number: ${item.matchNumber}`}</p>
             <p>{`Amount: ${item.amount}`}</p>
+            <p>{`Bet: ${item?.bet ? item?.bet.toUpperCase() : "N/A"}`}</p>
           </div>
         </List.Item>
         <Divider />
