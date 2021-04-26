@@ -1,4 +1,4 @@
-import { SET_RECRUITED_USERS } from "./constants";
+import { SET_RECRUITED_USERS, RESET_RECRUITED } from "./constants";
 const initialState = {
   recruitedPlayers: [],
 };
@@ -9,6 +9,12 @@ export default function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         recruitedPlayers: [...state.recruitedPlayers, payload] || [],
+      };
+    }
+    case RESET_RECRUITED: {
+      return {
+        ...state,
+        recruitedPlayers: [],
       };
     }
 

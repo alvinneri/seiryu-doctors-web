@@ -5,6 +5,9 @@ import {
   SET_BANKS,
   SET_BET_HISTORY,
   SET_CREDIT_REQUESTS,
+  SET_RECRUITERS,
+  SET_RECRUITED_USERS,
+  RESET_RECRUITED,
 } from "./constants";
 import { SET_LOADING } from "../public/constants";
 import { auth, db } from "../../firebase/config";
@@ -51,3 +54,24 @@ export const setCreditRequests = (payload) => {
     payload: payload,
   };
 };
+
+export const setRecruiters = (payload) => {
+  return {
+    type: SET_RECRUITERS,
+    payload: payload,
+  };
+};
+
+export function setRecruitedPlayers(data) {
+  return {
+    type: SET_RECRUITED_USERS,
+    payload: data,
+  };
+}
+
+export function resetRecruited() {
+  return {
+    type: RESET_RECRUITED,
+    payload: [],
+  };
+}

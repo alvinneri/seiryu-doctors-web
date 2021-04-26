@@ -16,7 +16,9 @@ const LayoutWrapper = (props) => {
     <Layout style={{ height: "100vh" }}>
       {location.pathname !== "/public/twitch" ? (
         <>
-          <SideNavigation />
+          <div style={{ height: "100vh", overflow: "scroll" }}>
+            <SideNavigation />
+          </div>
           <Layout>
             <Content style={{ margin: "24px 16px 0" }}>
               <div

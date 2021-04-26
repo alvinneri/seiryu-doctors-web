@@ -18,12 +18,20 @@ import CreditRequest from "../features/admin/creditRequest";
 import Audit from "../features/admin/audit";
 import { ContactsPage } from "../features/admin/contacts";
 import Twitch from "../features/admin/twitch";
+import Recruiters from "../features/admin/recruiters";
+import RecruitedDetails from "../features/admin/recruiters/RecruiterDetails";
 export const AdminRoutes = () => {
   return (
     <Switch>
       <PrivateRoute exact path={"/"} component={Home} />
       <PrivateRoute exact path={"/categories"} component={Categories} />
       <PrivateRoute exact path={"/users"} component={Users} />
+      <PrivateRoute exact path={"/admin-recruiters"} component={Recruiters} />
+      <PrivateRoute
+        exact
+        path={"/admin-recruiters/recruiter/:id"}
+        component={RecruitedDetails}
+      />
       <PrivateRoute exact path={"/manage-gcash"} component={ManageGcash} />
       <PrivateRoute exact path={"/manage-matches"} component={Matches} />
       <PrivateRoute exact path={"/manage-banks"} component={ManageBanks} />

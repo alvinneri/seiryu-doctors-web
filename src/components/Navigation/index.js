@@ -50,6 +50,11 @@ export const SideNavigation = () => {
             path: "/users",
           },
           {
+            name: "RECRUITERS",
+            icon: <ApartmentOutlined />,
+            path: "/admin-recruiters",
+          },
+          {
             name: "MANAGE MATCHES",
             icon: <ApartmentOutlined />,
             path: "/manage-matches",

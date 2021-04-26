@@ -5,6 +5,9 @@ import {
   SET_BANKS,
   SET_BET_HISTORY,
   SET_CREDIT_REQUESTS,
+  SET_RECRUITERS,
+  SET_RECRUITED_USERS,
+  RESET_RECRUITED,
 } from "./constants";
 const initialState = {
   categories: [],
@@ -13,6 +16,8 @@ const initialState = {
   banks: [],
   betHistory: [],
   creditRequest: [],
+  recruiters: [],
+  recruitedPlayers: [],
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -51,6 +56,24 @@ export default function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         creditRequest: payload,
+      };
+    }
+    case SET_RECRUITERS: {
+      return {
+        ...state,
+        recruiters: payload,
+      };
+    }
+    case SET_RECRUITED_USERS: {
+      return {
+        ...state,
+        recruitedPlayers: [...state.recruitedPlayers, payload] || [],
+      };
+    }
+    case RESET_RECRUITED: {
+      return {
+        ...state,
+        recruitedPlayers: [],
       };
     }
 
