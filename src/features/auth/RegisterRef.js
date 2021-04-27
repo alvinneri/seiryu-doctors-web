@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Button, Form, Image } from "antd";
 import logo from "../../assets/images/barakobet.png";
 import { auth, db } from "../../firebase/config";
 import { toast } from "react-toastify";
+import { useParams } from "react-router";
 
-const Register = () => {
+const RegisterRef = () => {
   // * local states
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -12,7 +13,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [invitedBy, setInvitedBy] = useState("");
   const [isRegistered, setRegistered] = useState(false);
-
+  const { id } = useParams();
   // * register
   const Register = async (values) => {
     await auth
@@ -27,7 +28,7 @@ const Register = () => {
             uid: user.user.uid,
             isVerified: false,
             credits: 0,
-            // invitedBy: values.invitedBy,
+            invitedBy: values.invitedBy,
             userType: "USER",
           })
           .then((doc) => {
@@ -49,10 +50,16 @@ const Register = () => {
       name: name,
       number: number,
       password: password,
-      // invitedBy: invitedBy,
+      invitedBy: invitedBy,
     };
     Register(values);
   };
+
+  useEffect(() => {
+    if (id) {
+      setInvitedBy(id);
+    }
+  }, [id]);
 
   return (
     <div className="login-container">
@@ -105,6 +112,14 @@ const Register = () => {
             </Form.Item>
             <Form.Item>
               <Input
+                disabled="true"
+                placeholder="Referral Code (Optional)"
+                value={invitedBy}
+                onChange={(text) => setInvitedBy(text.target.value)}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Input
                 type="password"
                 placeholder="Password"
                 value={password}
@@ -129,4 +144,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterRef;

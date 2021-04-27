@@ -97,6 +97,22 @@ const RecruitedPlayers = () => {
         COPY REFERRAL CODE
       </Button>
       <span>{user.uid}</span>
+      <div>
+        <Button
+          type="primary"
+          onClick={() => {
+            navigator.clipboard.writeText(
+              `https://barako-bet.netlify.app/register/${user.uid}`
+            );
+          }}
+          style={{ margin: "1em" }}
+        >
+          <CopyFilled />
+          COPY REFERRAL REGISTRATION LINK
+        </Button>
+        <span>{`https://barako-bet.netlify.app/register/${user.uid}`}</span>
+      </div>
+
       <Table
         columns={columns}
         dataSource={recruitedPlayers}

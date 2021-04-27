@@ -14,7 +14,7 @@ const LayoutWrapper = (props) => {
 
   return (
     <Layout style={{ height: "100vh" }}>
-      {location.pathname !== "/register" ? (
+      {location.pathname.split("/")[1] !== "register" ? (
         <>
           <div style={{ height: "100vh", overflow: "scroll" }}>
             <SideNavigation />
