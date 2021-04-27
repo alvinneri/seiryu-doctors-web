@@ -10,7 +10,8 @@ const Register = () => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [isRegistered, setRegistered] = useState("false");
+  const [invitedBy, setInvitedBy] = useState("");
+  const [isRegistered, setRegistered] = useState(false);
 
   // * register
   const Register = async (values) => {
@@ -26,11 +27,13 @@ const Register = () => {
             uid: user.user.uid,
             isVerified: false,
             credits: 0,
-            invitedBy: "",
+            invitedBy: values.invitedBy,
             userType: "USER",
           })
           .then((doc) => {
-            toast.success("Registration Success");
+            toast.success(
+              "Thank you for signing up. You may now log in on the mobile app."
+            );
             setRegistered(true);
             console.log(doc);
           });
@@ -46,6 +49,7 @@ const Register = () => {
       name: name,
       number: number,
       password: password,
+      invitedBy: invitedBy,
     };
     Register(values);
   };
@@ -101,6 +105,14 @@ const Register = () => {
             </Form.Item>
             <Form.Item>
               <Input
+                placeholder="Referral Code (Optional)"
+                value={invitedBy}
+                onChange={(text) => setInvitedBy(text.target.value)}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Input
+                type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(text) => setPassword(text.target.value)}

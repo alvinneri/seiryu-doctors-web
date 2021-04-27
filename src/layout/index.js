@@ -14,7 +14,7 @@ const LayoutWrapper = (props) => {
 
   return (
     <Layout style={{ height: "100vh" }}>
-      {location.pathname !== "/public/twitch" ? (
+      {location.pathname !== "/register" ? (
         <>
           <div style={{ height: "100vh", overflow: "scroll" }}>
             <SideNavigation />
