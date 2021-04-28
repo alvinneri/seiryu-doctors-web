@@ -204,6 +204,12 @@ export const columns = [
     ),
   },
   {
+    title: "PROCESSED CREDITS",
+    dataIndex: "data",
+    key: "data",
+    render: (data) => <p>{data.isProcessed ? "TRUE" : "FALSE"}</p>,
+  },
+  {
     title: "Total Bets Wala",
     dataIndex: "wala",
     key: "wala",

@@ -265,6 +265,7 @@ const Matches = () => {
         ...currentMatch.match,
         date: new Date(),
         categoryId: selectedCategory.id,
+        isProcessed: true,
       });
 
       const categoriesRef = await db
