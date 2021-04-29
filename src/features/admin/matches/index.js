@@ -188,19 +188,29 @@ const Matches = () => {
       dummyBet + Math.floor(Math.random() * (700 - -700 + 1)) + -700;
 
     setTimeout(async () => {
+      const categoryRef = db.collection("categories").doc(selectedCategory.id);
+
+      const doc = await categoryRef.get();
+      const meronTotalBet = doc.data().match.meron.totalBets;
+      const walaTotalBet = doc.data().match.wala.totalBets;
+      const meronBetters = doc.data().match.meron.betters;
+      const walaBetters = doc.data().match.wala.betters;
+
       await db
         .collection("categories")
         .doc(selectedCategory.id)
         .update({
-          "match.meron.totalBets": dummyBet,
+          "match.meron.totalBets": meronTotalBet + dummyBet,
           "match.meron.betters": [
+            ...meronBetters,
             {
               user: "yqOXrFroD0erU2MjtBueN0mZekP2",
               amount: dummyBet,
             },
           ],
-          "match.wala.totalBets": dummyBet2,
+          "match.wala.totalBets": walaTotalBet + dummyBet2,
           "match.wala.betters": [
+            ...walaBetters,
             {
               user: "yqOXrFroD0erU2MjtBueN0mZekP2",
               amount: dummyBet2,
@@ -209,24 +219,34 @@ const Matches = () => {
         });
     }, 3000);
 
-    let dummyBet3 = Math.floor(Math.random() * (49000 - 29000 + 1)) + 29000;
+    let dummyBet3 = Math.floor(Math.random() * (24500 - 14500 + 1)) + 14500;
     let dummyBet4 =
-      dummyBet3 + Math.floor(Math.random() * (1400 - -1400 + 1)) + -1400;
+      dummyBet3 + Math.floor(Math.random() * (700 - -700 + 1)) + -700;
 
     setTimeout(async () => {
+      const categoryRef = db.collection("categories").doc(selectedCategory.id);
+
+      const doc = await categoryRef.get();
+      const meronTotalBet = doc.data().match.meron.totalBets;
+      const walaTotalBet = doc.data().match.wala.totalBets;
+      const meronBetters = doc.data().match.meron.betters;
+      const walaBetters = doc.data().match.wala.betters;
+
       await db
         .collection("categories")
         .doc(selectedCategory.id)
         .update({
-          "match.meron.totalBets": dummyBet3,
+          "match.meron.totalBets": meronTotalBet + dummyBet3,
           "match.meron.betters": [
+            ...meronBetters,
             {
               user: "yqOXrFroD0erU2MjtBueN0mZekP2",
               amount: dummyBet3,
             },
           ],
-          "match.wala.totalBets": dummyBet4,
+          "match.wala.totalBets": walaTotalBet + dummyBet4,
           "match.wala.betters": [
+            ...walaBetters,
             {
               user: "yqOXrFroD0erU2MjtBueN0mZekP2",
               amount: dummyBet4,
