@@ -292,6 +292,20 @@ const Matches = () => {
                 100) *
                 item.amount,
           });
+
+          await userRef.collection("added_credits").add({
+            amount:
+              (getPayout(
+                currentMatch?.match?.meron?.totalBets +
+                  currentMatch?.match?.wala?.totalBets,
+                currentMatch?.match?.wala?.totalBets
+              ) /
+                100) *
+              item.amount,
+            date: new Date(),
+            matchNumber: currentMatch.match.number,
+            matchName: currentMatch.match.name,
+          });
         });
         toast.success("All bets were processed successfully.");
       } else if (currentMatch.match.result === "WALA") {
@@ -311,6 +325,20 @@ const Matches = () => {
                 100) *
                 item.amount,
           });
+
+          await userRef.collection("added_credits").add({
+            amount:
+              (getPayout(
+                currentMatch?.match?.meron?.totalBets +
+                  currentMatch?.match?.wala?.totalBets,
+                currentMatch?.match?.wala?.totalBets
+              ) /
+                100) *
+              item.amount,
+            date: new Date(),
+            matchNumber: currentMatch.match.number,
+            matchName: currentMatch.match.name,
+          });
         });
         toast.success("All bets were processed successfully.");
       } else if (currentMatch.match.result === "DRAW") {
@@ -321,6 +349,13 @@ const Matches = () => {
 
           await userRef.update({
             credits: credits + drawMultiplier * item.amount,
+          });
+
+          await userRef.collection("added_credits").add({
+            amount: drawMultiplier * item.amount,
+            date: new Date(),
+            matchNumber: currentMatch.match.number,
+            matchName: currentMatch.match.name,
           });
         });
 
