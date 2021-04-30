@@ -22,28 +22,64 @@ const RecruitedDetails = () => {
   const getUsers = async () => {
     const usersRef = await db.collection("users");
     const snapshot = await usersRef.where("invitedBy", "==", id).get();
-    // let _users = [];
 
     if (!snapshot.empty) {
       snapshot.forEach(async (doc) => {
-        const betHistory = db.collection("bet_history");
-        const _snapshot = await betHistory
-          .where("uid", "==", doc.data().uid)
-          .get();
+        const fights = db.collection("fights");
+        const fightRef = await fights.get();
         let _totals = 0;
-        if (!_snapshot.empty) {
-          _snapshot.forEach((doc) => {
-            _totals = _totals + parseInt(doc.data().amount);
+        let docs;
+        if (!fightRef.empty) {
+          fightRef.forEach((fight) => {
+            if (fight.result !== "CANCELLED" && fight.result !== "DRAW") {
+              fight.data()?.meron?.betters.forEach((meron) => {
+                if (meron.user === doc.data().uid) {
+                  _totals = _totals + parseInt(meron.amount);
+                }
+              });
+
+              fight.data()?.wala?.betters.forEach((wala) => {
+                if (wala.user === doc.data().uid) {
+                  _totals = _totals + parseInt(wala.amount);
+                }
+              });
+
+              fight.data()?.draw?.betters.forEach((draw) => {
+                if (draw.user === doc.data().uid) {
+                  _totals = _totals + parseInt(draw.amount);
+                }
+              });
+            }
           });
+          // // console.log(docs, "docs");
         }
-        let docs = {
+
+        docs = {
           ...doc.data(),
           id: doc.id,
           total: _totals,
         };
-        // console.log(docs, "docs");
-        // setUsers([..._users, docs]);
+        console.log(docs, "docs");
         dispatch(setRecruitedPlayers(docs));
+
+        // const betHistory = db.collection("bet_history");
+        // const _snapshot = await betHistory
+        //   .where("uid", "==", doc.data().uid)
+        //   .get();
+        // let _totals = 0;
+        // if (!_snapshot.empty) {
+        //   _snapshot.forEach((doc) => {
+        //     _totals = _totals + parseInt(doc.data().amount);
+        //   });
+        // }
+        // let docs = {
+        //   ...doc.data(),
+        //   id: doc.id,
+        //   total: _totals,
+        // };
+        // // console.log(docs, "docs");
+        // // setUsers([..._users, docs]);
+        // dispatch(setRecruitedPlayers(docs));
       });
     }
     // console.log(_users);
