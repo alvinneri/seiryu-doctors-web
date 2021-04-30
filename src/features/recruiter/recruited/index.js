@@ -17,18 +17,17 @@ const RecruitedPlayers = () => {
     const usersRef = await db.collection("users");
     const snapshot = await usersRef.where("invitedBy", "==", user.uid).get();
     // let _users = [];
-    let _totals = 0;
+
     if (!snapshot.empty) {
       snapshot.forEach(async (doc) => {
         const betHistory = db.collection("bet_history");
         const _snapshot = await betHistory
           .where("uid", "==", doc.data().uid)
           .get();
-
+        let _totals = 0;
         if (!_snapshot.empty) {
           _snapshot.forEach((doc) => {
             _totals = _totals + parseInt(doc.data().amount);
-            console.log(_totals, "_totals");
           });
         }
         let docs = {
