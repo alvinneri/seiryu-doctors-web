@@ -13,7 +13,7 @@ import moment from "moment";
 const { Text } = Typography;
 
 const RecruitedDetails = () => {
-  const currentDate = moment(new Date()).format("YYYY/MM");
+  const currentDate = moment(new Date()).format("YYYY-MM");
   console.log(currentDate);
   const { id } = useParams();
   const dispatch = useDispatch();
