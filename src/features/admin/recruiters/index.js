@@ -64,7 +64,7 @@ const Recruiters = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ height: "80vh", overflow: "scroll" }}>
       <Table columns={columns} dataSource={recruiters} />
     </div>
   );

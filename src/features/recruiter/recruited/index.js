@@ -48,7 +48,6 @@ const RecruitedPlayers = () => {
               });
             }
           });
-          // // console.log(docs, "docs");
         }
 
         docs = {
@@ -58,25 +57,6 @@ const RecruitedPlayers = () => {
         };
         console.log(docs, "docs");
         dispatch(setRecruitedPlayers(docs));
-
-        // const betHistory = db.collection("bet_history");
-        // const _snapshot = await betHistory
-        //   .where("uid", "==", doc.data().uid)
-        //   .get();
-        // let _totals = 0;
-        // if (!_snapshot.empty) {
-        //   _snapshot.forEach((doc) => {
-        //     _totals = _totals + parseInt(doc.data().amount);
-        //   });
-        // }
-        // let docs = {
-        //   ...doc.data(),
-        //   id: doc.id,
-        //   total: _totals,
-        // };
-        // // console.log(docs, "docs");
-        // // setUsers([..._users, docs]);
-        // dispatch(setRecruitedPlayers(docs));
       });
     }
     // console.log(_users);
