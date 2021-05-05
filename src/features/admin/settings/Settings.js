@@ -14,6 +14,7 @@ export const Settings = () => {
   const [drawMultiplier, setDrawMultplier] = useState("");
   const [twitchChannel, setTwitchChannel] = useState("");
   const [drawBetLimit, setDrawbetlimit] = useState(0);
+  const [withdrawLimit, setWithdrawLimit] = useState(0);
 
   const onSubmit = async () => {
     setSubmitting(true);
@@ -25,6 +26,7 @@ export const Settings = () => {
         drawMultiplier,
         sabongTwitchChannel: twitchChannel,
         drawBetLimit,
+        withdrawLimit,
       });
     } else {
       const appSettingRef = db.collection("app_settings").add({
@@ -34,6 +36,7 @@ export const Settings = () => {
         drawMultiplier,
         sabongTwitchChannel: twitchChannel,
         drawBetLimit,
+        withdrawLimit,
       });
     }
     toast.success("App Settings Updated");
@@ -50,6 +53,7 @@ export const Settings = () => {
         setDrawMultplier(doc.data().drawMultiplier);
         setDrawbetlimit(doc.data().drawBetLimit);
         setTwitchChannel(doc.data().sabongTwitchChannel);
+        setWithdrawLimit(doc.data().withdrawLimit);
         setDocId(doc.id);
       });
     });
@@ -112,6 +116,14 @@ export const Settings = () => {
                   placeholder="Draw Maximum Bet Amount."
                   value={drawBetLimit}
                   onChange={(text) => setDrawbetlimit(text.target.value)}
+                />
+              </Form.Item>
+              <Form.Item>
+                <span>Minimum Withdraw Bet Allowed</span>
+                <Input
+                  placeholder="Draw Maximum Bet Amount."
+                  value={withdrawLimit}
+                  onChange={(text) => setWithdrawLimit(text.target.value)}
                 />
               </Form.Item>
               <Form.Item>
