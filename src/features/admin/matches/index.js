@@ -432,6 +432,88 @@ const Matches = () => {
         toast.success("All bets were processed successfully.");
       }
 
+      await currentMatch.match.wala.betters.forEach(async (item) => {
+        if (currentMatch.match.result === "WALA") {
+          const bet_history = await db
+            .collection("bet_history")
+            .where("uid", "==", item.user)
+            .get();
+          if (!bet_history.empty) {
+            bet_history.forEach(async (doc) => {
+              db.collection("bet_history").doc(doc.id).update({
+                result: "WIN",
+              });
+            });
+          }
+        } else {
+          const bet_history = await db
+            .collection("bet_history")
+            .where("uid", "==", item.user)
+            .get();
+          if (!bet_history.empty) {
+            bet_history.forEach(async (doc) => {
+              db.collection("bet_history").doc(doc.id).update({
+                result: "LOSE",
+              });
+            });
+          }
+        }
+      });
+      await currentMatch.match.meron.betters.forEach(async (item, index) => {
+        if (currentMatch.match.result === "MERON") {
+          const bet_history = await db
+            .collection("bet_history")
+            .where("uid", "==", item.user)
+            .get();
+          if (!bet_history.empty) {
+            bet_history.forEach(async (doc) => {
+              db.collection("bet_history").doc(doc.id).update({
+                result: "WIN",
+              });
+            });
+          }
+        } else {
+          const bet_history = await db
+            .collection("bet_history")
+            .where("uid", "==", item.user)
+            .get();
+          if (!bet_history.empty) {
+            bet_history.forEach(async (doc) => {
+              db.collection("bet_history").doc(doc.id).update({
+                result: "LOSE",
+              });
+            });
+          }
+        }
+      });
+      await currentMatch.match.draw.betters.forEach(async (item) => {
+        if (currentMatch.match.result === "DRAW") {
+          const bet_history = await db
+            .collection("bet_history")
+            .where("uid", "==", item.user)
+            .get();
+          if (!bet_history.empty) {
+            bet_history.forEach(async (doc) => {
+              db.collection("bet_history").doc(doc.id).update({
+                result: "WIN",
+              });
+            });
+          }
+        } else {
+          const bet_history = await db
+            .collection("bet_history")
+            .where("uid", "==", item.user)
+            .get();
+          if (!bet_history.empty) {
+            bet_history.forEach(async (doc) => {
+              db.collection("bet_history").doc(doc.id).update({
+                result: "LOSE",
+              });
+            });
+          }
+        }
+      });
+
       // deleteMatch();
     }
   };
