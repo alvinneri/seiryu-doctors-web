@@ -20,6 +20,7 @@ import { ContactsPage } from "../features/admin/contacts";
 import Twitch from "../features/admin/twitch";
 import Recruiters from "../features/admin/recruiters";
 import RecruitedDetails from "../features/admin/recruiters/RecruiterDetails";
+import AddedCredits from "../features/admin/users/AddedCredits";
 export const AdminRoutes = () => {
   return (
     <Switch>
@@ -44,6 +45,11 @@ export const AdminRoutes = () => {
       <PrivateRoute exact path={"/credit-request"} component={CreditRequest} />
       <PrivateRoute exact path={"/audit"} component={Audit} />
       <PrivateRoute exact path={"/contacts-page"} component={ContactsPage} />
+      <PrivateRoute
+        exact
+        path={"/user/added-credits/:id"}
+        component={AddedCredits}
+      />
       <Route exact path={"/twitch"} component={Twitch} />
     </Switch>
   );
