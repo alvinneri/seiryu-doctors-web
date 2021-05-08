@@ -57,6 +57,7 @@ const BetHistory = () => {
             <p>{`Match Number: ${item.matchNumber}`}</p>
             <p>{`Amount: ${item.amount}`}</p>
             <p>{`Bet: ${item?.bet ? item?.bet.toUpperCase() : "N/A"}`}</p>
+            <p>{`Result: ${item.result ? item.result : "N/A"}`}</p>
           </div>
         </List.Item>
         <Divider />
