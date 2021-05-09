@@ -200,7 +200,7 @@ export const columns = [
     dataIndex: "date",
     key: "date",
     render: (text) => (
-      <p>{moment(text.toDate()).format("MMM-DD-YYYY H:MM A")}</p>
+      <p>{moment(text.toDate()).format("MMM-DD-YYYY h:mm A")}</p>
     ),
   },
   {

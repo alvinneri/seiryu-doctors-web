@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBetHistory } from "../../../store/admin/actions";
 import { db } from "../../../firebase/config";
-import { List, Divider, Button } from "antd";
+import { List, Divider, Button, Table } from "antd";
 import moment from "moment";
 import { usePagination } from "use-pagination-firestore";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
@@ -18,35 +18,57 @@ const BetHistory = () => {
       limit: 10,
     }
   );
-
-  // const getBetsHistory = async () => {
-  //   const betRef = db.collection("bet_history");
-  //   const snapshot = await betRef.orderBy("date", "desc").get();
-
-  //   if (snapshot.empty) {
-  //     dispatch(setBetHistory([]));
-  //     return;
-  //   }
-
-  //   let docs = [];
-  //   snapshot.forEach(async (doc) => {
-  //     docs.push({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     });
-  //   });
-  //   console.log(docs);
-  //   dispatch(setBetHistory(docs));
-  // };
-
-  // useEffect(() => {
-  //   getBetsHistory();
-  // }, []);
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Id",
+      dataIndex: "uid",
+      key: "uid",
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (text) => (
+        <p>{moment(text.toDate()).format("MMM-DD-YY h:mm A")}</p>
+      ),
+    },
+    {
+      title: "Match Name",
+      dataIndex: "matchName",
+      key: "matchName",
+    },
+    {
+      title: "Match Number",
+      dataIndex: "matchNumber",
+      key: "matchNumber",
+    },
+    {
+      title: "Bet",
+      dataIndex: "bet",
+      key: "bet",
+    },
+    {
+      title: "Result",
+      dataIndex: "result",
+      key: "result",
+    },
+  ];
 
   const Item = ({ item }) => {
     return (
       <div>
-        <List.Item className="transactions-list-item">
+        <Table columns={columns} dataSource={items} />
+        {/*<List.Item className="transactions-list-item">
           <div>
             <p>{`Date: ${moment(item.date.toDate()).format(
               "MMM-DD-YYYY h:mm A"
@@ -59,22 +81,23 @@ const BetHistory = () => {
             <p>{`Bet: ${item?.bet ? item?.bet.toUpperCase() : "N/A"}`}</p>
             <p>{`Result: ${item.result ? item.result : "N/A"}`}</p>
           </div>
-        </List.Item>
+            </List.Item>*/}
         <Divider />
       </div>
     );
   };
 
   return (
-    <div>
+    <div style={{ height: "80vh", overflow: "scroll" }}>
       <h3>List Of Past Bets</h3>
-      <List
+      {/*<List
         style={{ height: "70vh", overflow: "scroll" }}
         size="small"
         bordered
         dataSource={items}
         renderItem={(item) => <Item item={item} />}
-      />
+      />*/}
+      <Table columns={columns} dataSource={items} />
       <div
         style={{
           flexDirection: "row",
