@@ -14,6 +14,7 @@ const Categories = () => {
   const [selectedUser, setSelectedUser] = useState("");
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState("");
+  const [id, setId] = useState("");
 
   const { items, isLoading, isStart, isEnd, getPrev, getNext } = usePagination(
     db.collection("users").orderBy("credits", "desc"),
@@ -24,6 +25,26 @@ const Categories = () => {
 
   const _search = async () => {
     const usersRef = await db.collection("users").where("email", "==", name);
+    const unsubcribed = usersRef.onSnapshot((snapshot) => {
+      let _users = [];
+      snapshot.forEach((doc) => {
+        if (doc.data().userType !== USER_TYPES.ADMIN) {
+          let docs = {
+            ...doc.data(),
+            id: doc.id,
+          };
+
+          _users.push(docs);
+        }
+      });
+      console.log(_users);
+      dispatch(setUsers(_users));
+    });
+    return unsubcribed;
+  };
+
+  const _searchById = async () => {
+    const usersRef = await db.collection("users").where("uid", "==", id);
     const unsubcribed = usersRef.onSnapshot((snapshot) => {
       let _users = [];
       snapshot.forEach((doc) => {
@@ -96,6 +117,14 @@ const Categories = () => {
     _search();
   };
 
+  const searchById = () => {
+    if (!id) {
+      dispatch(setUsers(items));
+      return;
+    }
+    _searchById();
+  };
+
   return (
     <div>
       <UpdateCategories
@@ -113,7 +142,21 @@ const Categories = () => {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" onClick={search}>
-            SEARCH
+            SEARCH by EMAIL
+          </Button>
+        </Form.Item>
+      </Form>
+      <Form onSubmit={searchById}>
+        <Form.Item>
+          <Input
+            placeholder="Id of User"
+            value={id}
+            onChange={(text) => setId(text.target.value)}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" onClick={searchById}>
+            SEARCH by ID
           </Button>
         </Form.Item>
       </Form>
