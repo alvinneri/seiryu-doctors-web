@@ -13,27 +13,20 @@ const LayoutWrapper = (props) => {
   console.log(location);
 
   return (
-    <Layout style={{ height: "100vh" }}>
-      {location.pathname.split("/")[1] !== "register" ? (
-        <>
-          <div style={{ height: "100vh", overflow: "scroll" }}>
-            <SideNavigation />
-          </div>
-          <Layout>
-            <Content style={{ margin: "24px 16px 0" }}>
-              <div
-                className="site-layout-background"
-                style={{ padding: 24, height: "100%" }}
-              >
-                {children}
-              </div>
-            </Content>
-            <Footer style={{ textAlign: "center" }}>Betting ©2021</Footer>
-          </Layout>
-        </>
-      ) : (
-        children
-      )}
+    <Layout>
+      <>
+        <Layout>
+          <Content style={{ margin: "24px 16px 0" }}>
+            <div
+              className="site-layout-background"
+              style={{ padding: 24, height: "100%" }}
+            >
+              {children}
+            </div>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>Seryui ©2021</Footer>
+        </Layout>
+      </>
     </Layout>
   );
 };
