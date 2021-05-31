@@ -9,14 +9,14 @@ import {
   Space,
 } from "antd";
 import { useDispatch } from "react-redux";
-import { login } from "../../store/public/actions";
 import logo from "../../assets/images/seiryulogo.jpeg";
 import { Row, Col } from "antd";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData,
-} from "react-country-region-selector";
+import { CountryDropdown } from "react-country-region-selector";
+import { db } from "../../firebase/config";
+import { toast } from "react-toastify";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { setMaxBirthDate } from "../../utils";
 
 const Register = () => {
   const { Title, Text } = Typography;
@@ -41,7 +41,27 @@ const Register = () => {
   const [errorClinic, setErrorClinic] = useState("");
   const [errorOthers, setErrorOthers] = useState("");
 
-  const onSubmit = (e) => {
+  const userRef = db.collection("users");
+
+  const reset = () => {
+    setTitle("");
+    setFirstName("");
+    setLastName("");
+    setMiddleName("");
+    setSuffix("");
+    setAddresLineOne("");
+    setAddresLineTwo("");
+    setCity("");
+    setState("");
+    setZipCode("");
+    setCountry("");
+    setPrcNo("");
+    setMobileNumber("");
+    setBirthdate("");
+    setEmail("");
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (!firstName || !lastName) {
@@ -67,6 +87,13 @@ const Register = () => {
       setErrorOthers("");
     }
 
+    if (!isAgree) {
+      toast.error(
+        "You have to agree to our data privacy notice in order to signup."
+      );
+      return;
+    }
+
     let values = {
       firstName: firstName,
       lastName: lastName,
@@ -85,7 +112,35 @@ const Register = () => {
       birthdate: birthdate,
     };
 
-    console.log(values);
+    try {
+      const snapshot = await userRef.where("email", "==", values.email).get();
+
+      if (!snapshot.empty) {
+        toast.error("Email already exist.");
+        return;
+      }
+
+      const snapshot2 = await userRef
+        .where("mobileNumber", "==", values.mobileNumber)
+        .get();
+
+      if (!snapshot2.empty) {
+        toast.error("Phone Number already exist.");
+        return;
+      }
+
+      userRef
+        .add(values)
+        .then(() => {
+          toast.success("Account Successfully Registered");
+          reset();
+        })
+        .catch((err) => {
+          toast.error(err);
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onChange = (e) => {
@@ -101,7 +156,7 @@ const Register = () => {
       <div className="signup-logo-container">
         <img src={logo} className="signup-logo" />
       </div>
-      <div style={{ margin: "0 auto", maxWidth: "900px" }}>
+      <div style={{ margin: "0 auto", maxWidth: "600px" }}>
         <Title level={5}>Seiryu Pharmacy Partner Sign-up Form</Title>
         <Title level={5}>Doctor Partner</Title>
 
@@ -111,7 +166,7 @@ const Register = () => {
           </Title>
           {errorName && <Text type="danger">{errorName}</Text>}
           <Row justify="space-between">
-            <Col span={3}>
+            <Col xs={24} sm={3}>
               <Form.Item>
                 <Input
                   placeholder="Title"
@@ -120,7 +175,7 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={5}>
+            <Col xs={24} sm={5}>
               <Form.Item>
                 <Input
                   placeholder="First Name"
@@ -129,7 +184,7 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={5}>
+            <Col xs={24} sm={5}>
               <Form.Item>
                 <Input
                   placeholder="Middle Name"
@@ -138,7 +193,7 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={5}>
+            <Col xs={24} sm={5}>
               <Form.Item>
                 <Input
                   placeholder="Last Name"
@@ -147,7 +202,7 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={3}>
+            <Col xs={24} sm={3}>
               <Form.Item>
                 <Input
                   placeholder="Suffix"
@@ -185,7 +240,7 @@ const Register = () => {
           </Row>
 
           <Row justify="space-between">
-            <Col span={11}>
+            <Col xs={24} sm={11}>
               <Form.Item>
                 <Input
                   placeholder="City"
@@ -194,7 +249,7 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={11}>
+            <Col xs={24} sm={11}>
               <Form.Item>
                 <Input
                   placeholder="State / Province / Region"
@@ -205,7 +260,7 @@ const Register = () => {
             </Col>
           </Row>
           <Row justify="space-between">
-            <Col span={11}>
+            <Col xs={24} sm={11}>
               <Form.Item>
                 <Input
                   placeholder="Postal / Zip Code"
@@ -214,7 +269,7 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={11}>
+            <Col xs={24} sm={11}>
               <Form.Item>
                 <CountryDropdown
                   style={{
@@ -231,7 +286,7 @@ const Register = () => {
           </Row>
 
           <Row justify="space-between">
-            <Col span={5}>
+            <Col xs={24} sm={11}>
               <Form.Item>
                 <Title level={5} type="secondary">
                   PRC No.*
@@ -243,7 +298,7 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={5}>
+            <Col xs={24} sm={11}>
               <Form.Item>
                 <Title level={5} type="secondary">
                   Email*
@@ -255,24 +310,40 @@ const Register = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={5}>
+          </Row>
+          <Row justify="space-between">
+            <Col xs={24} sm={11}>
               <Form.Item>
                 <Title level={5} type="secondary">
-                  Mobile Number*
+                  Mobile No.*
                 </Title>
-                <Input
-                  placeholder="Mobile Number"
+                <PhoneInput
+                  inputStyle={{
+                    padding: "0.25em",
+                    paddingLeft: "3.5em",
+                    width: "100%",
+                    borderRadius: "3px",
+                    border: "1px solid #c4bebe",
+                  }}
+                  country={"ph"}
                   value={mobileNumber}
-                  onChange={(text) => setMobileNumber(text.target.value)}
+                  onChange={(phone) => setMobileNumber(phone)}
                 />
               </Form.Item>
             </Col>
-            <Col span={5}>
+            <Col xs={24} sm={11}>
               <Form.Item>
                 <Title level={5} type="secondary">
                   Birthday*
                 </Title>
-                <DatePicker onChange={onChangeBirthdate} />
+                <DatePicker
+                  defaultValue={setMaxBirthDate(new Date(), 0, 0, -18)}
+                  disabledDate={(d) =>
+                    !d || d.isAfter(setMaxBirthDate(new Date(), 0, 0, -18))
+                  }
+                  onChange={onChangeBirthdate}
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
           </Row>
