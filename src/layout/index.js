@@ -24,7 +24,6 @@ const LayoutWrapper = (props) => {
               {children}
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>Seryui ©2021</Footer>
         </Layout>
       </>
     </Layout>

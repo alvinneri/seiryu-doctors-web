@@ -7,7 +7,7 @@ import Home from "../features/admin/Home";
 export const AdminRoutes = () => {
   return (
     <Switch>
-      <PrivateRoute exact path={"/"} component={Home} />
+      <PrivateRoute exact path={"/home"} component={Home} />
     </Switch>
   );
 };

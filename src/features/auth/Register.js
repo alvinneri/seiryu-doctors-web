@@ -17,8 +17,10 @@ import { toast } from "react-toastify";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { setMaxBirthDate } from "../../utils";
+import { useHistory } from "react-router";
 
 const Register = () => {
+  const history = useHistory();
   const { Title, Text } = Typography;
   const [title, setTitle] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -368,16 +370,31 @@ const Register = () => {
             </Text>
           </Form.Item>
           <Checkbox onChange={onChange}>I Agree</Checkbox>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={onSubmit}
-              style={{ width: "300px", margin: "1em 0" }}
-            >
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="space-between">
+            <Col xs={24} sm={11}>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  onClick={onSubmit}
+                  style={{ width: "300px", margin: "1em 0" }}
+                >
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={11}>
+              <Form.Item>
+                <Button
+                  type="danger"
+                  onClick={() => history.push("/")}
+                  style={{ width: "300px", margin: "1em 0" }}
+                >
+                  BACK TO LOGIN
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </div>

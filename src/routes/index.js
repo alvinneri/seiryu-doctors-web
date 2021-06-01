@@ -8,8 +8,10 @@ import { AdminRoutes } from "./adminRoutes";
 export const Routes = () => {
   const { user } = useSelector((state) => state.public);
 
+  const getUser = () => {};
+
   useEffect(() => {
-    console.log(user);
+    console.log(user, "user");
   }, [user]);
 
   const getRoutes = () => {

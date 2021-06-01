@@ -1,7 +1,3 @@
 export const USER_TYPES = {
   ADMIN: "ADMIN",
-  LOADER: "LOADER",
-  RECRUITER: "RECRUITER",
-  CONTROLLER: "CONTROLLER",
-  USER: "USER",
 };
