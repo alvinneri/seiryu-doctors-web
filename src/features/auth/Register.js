@@ -42,6 +42,7 @@ const Register = () => {
   const [errorName, setErrorName] = useState("");
   const [errorClinic, setErrorClinic] = useState("");
   const [errorOthers, setErrorOthers] = useState("");
+  const [medId, setMedId] = useState("");
 
   const userRef = db.collection("users");
 
@@ -96,52 +97,77 @@ const Register = () => {
       return;
     }
 
-    let values = {
-      firstName: firstName,
-      lastName: lastName,
-      middleName: middleName,
-      title: title,
-      suffix: suffix,
-      addressLineOne: addressLineOne,
-      addressLineTwo: addressLineTwo,
-      city: city,
-      state: state,
-      country: country,
-      zipCode: zipCode,
-      prcNo: prcNo,
-      email: email,
-      mobileNumber: mobileNumber,
-      birthdate: birthdate,
-    };
+    if (!medId) {
+      toast.error("Enter Medical Representative's Id.");
+      return;
+    }
 
     try {
-      const snapshot = await userRef.where("email", "==", values.email).get();
-
-      if (!snapshot.empty) {
-        toast.error("Email already exist.");
+      const medRef = db.collection("medical-reps");
+      const snapshot = await medRef.where("uid", "==", medId).get();
+      if (snapshot.empty) {
+        toast.error("Medical Representative Id not valid.");
         return;
-      }
-
-      const snapshot2 = await userRef
-        .where("mobileNumber", "==", values.mobileNumber)
-        .get();
-
-      if (!snapshot2.empty) {
-        toast.error("Phone Number already exist.");
-        return;
-      }
-
-      userRef
-        .add(values)
-        .then(() => {
-          toast.success("Account Successfully Registered");
-          reset();
-        })
-        .catch((err) => {
-          toast.error(err);
+      } else {
+        let medId;
+        snapshot.forEach((doc) => {
+          medId = doc.data().uid;
         });
+
+        let values = {
+          firstName: firstName,
+          lastName: lastName,
+          middleName: middleName,
+          title: title,
+          suffix: suffix,
+          addressLineOne: addressLineOne,
+          addressLineTwo: addressLineTwo,
+          city: city,
+          state: state,
+          country: country,
+          zipCode: zipCode,
+          prcNo: prcNo,
+          email: email,
+          mobileNumber: mobileNumber,
+          birthdate: birthdate,
+          medId: medId,
+        };
+
+        try {
+          const snapshot = await userRef
+            .where("email", "==", values.email)
+            .get();
+
+          if (!snapshot.empty) {
+            toast.error("Email already exist.");
+            return;
+          }
+
+          const snapshot2 = await userRef
+            .where("mobileNumber", "==", values.mobileNumber)
+            .get();
+
+          if (!snapshot2.empty) {
+            toast.error("Phone Number already exist.");
+            return;
+          }
+
+          userRef
+            .add(values)
+            .then(() => {
+              toast.success("Account Successfully Registered");
+              reset();
+            })
+            .catch((err) => {
+              toast.error(err);
+            });
+        } catch (err) {
+          console.log(err);
+        }
+      }
     } catch (err) {
-      console.log(err);
+      toast.error(err.message);
+      return;
     }
   };
 
@@ -370,6 +396,20 @@ const Register = () => {
             </Text>
           </Form.Item>
           <Checkbox onChange={onChange}>I Agree</Checkbox>
+          <Row justify="space-between" style={{ marginTop: 10 }}>
+            <Col xs={24} sm={11}>
+              <Form.Item>
+                <Title level={5} type="secondary">
+                  Medical Representative Id.*
+                </Title>
+                <Input
+                  placeholder="Id"
+                  value={medId}
+                  onChange={(text) => setMedId(text.target.value)}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
           <Row justify="space-between">
             <Col xs={24} sm={11}>
               <Form.Item>

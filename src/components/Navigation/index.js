@@ -37,7 +37,12 @@ export const SideNavigation = () => {
           {
             name: "HOME",
             icon: <HomeOutlined />,
-            path: "/",
+            path: "/home",
+          },
+          {
+            name: "LIST OF DOCTORS",
+            icon: <HomeOutlined />,
+            path: "/doctors",
           },
         ]);
       }

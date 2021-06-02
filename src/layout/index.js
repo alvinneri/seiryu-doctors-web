@@ -10,19 +10,12 @@ const LayoutWrapper = (props) => {
   const { children } = props;
   const location = useLocation();
 
-  console.log(location);
-
   return (
     <Layout>
       <>
         <Layout>
           <Content style={{ margin: "24px 16px 0" }}>
-            <div
-              className="site-layout-background"
-              style={{ padding: 24, height: "100%" }}
-            >
-              {children}
-            </div>
+            <div style={{ padding: 24, height: "100%" }}>{children}</div>
           </Content>
         </Layout>
       </>

@@ -21,7 +21,7 @@ import { usePagination } from "use-pagination-firestore";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import { SideNavigation } from "../../components/Navigation";
 
-const Home = () => {
+const Doctors = () => {
   const { Title, Text } = Typography;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -37,55 +37,42 @@ const Home = () => {
   };
 
   const { items, isLoading, isStart, isEnd, getPrev, getNext } = usePagination(
-    db.collection("medical-reps").orderBy("dateAdded", "desc"),
+    db.collection("users").orderBy("lastName", "desc"),
     {
       limit: 10,
     }
   );
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!firstName || !lastName) {
-      toast.error("First Name and Last Name are required.");
-      return;
-    }
-
-    let randomNum = Math.floor(1000 + Math.random() * 9000);
-
-    let values = {
-      firstName: firstName,
-      lastName: lastName,
-      dateAdded: new Date(),
-      uid: `${lastName}-${randomNum}`,
-    };
-
-    db.collection("medical-reps")
-      .add({
-        ...values,
-      })
-      .then(() => {
-        toast.success("Medical Representative Succefully Added.");
-        reset();
-        setVisible(false);
-      });
-  };
 
   const columns = [
     {
       title: "First Name",
       dataIndex: "firstName",
       key: "firstName",
+      responsive: ["sm"],
     },
     {
       title: "Last Name",
       dataIndex: "lastName",
       key: "lastName",
+      responsive: ["sm"],
     },
     {
-      title: "Id",
-      dataIndex: "uid",
-      key: "uid",
+      title: "Birthdate",
+      dataIndex: "birthdate",
+      key: "birthdate",
+      responsive: ["sm"],
+    },
+    {
+      title: "PRC No.",
+      dataIndex: "prcNo",
+      key: "prcNo",
+      responsive: ["sm"],
+    },
+    {
+      title: "Med Rep Id",
+      dataIndex: "medId",
+      key: "medId",
+      responsive: ["sm"],
     },
   ];
 
@@ -94,43 +81,7 @@ const Home = () => {
       <SideNavigation />
       <div style={{ width: "100%", marginLeft: "1em" }}>
         <div style={{ width: "100%", maxWidth: "300px" }}>
-          <Title level={5}>Medical Representatives</Title>
-          <Button
-            type="danger"
-            onClick={() => {
-              setVisible(true);
-            }}
-            style={{ width: "100%", margin: "0em 0" }}
-          >
-            ADD MED REP
-          </Button>
-          <Modal
-            title="ADD MEDICAL REPRESENTATIVE"
-            visible={visible}
-            onOk={onSubmit}
-            onCancel={() => setVisible(false)}
-          >
-            <Form style={{ marginTop: "1em" }}>
-              <Row>
-                <Col span={24}>
-                  <Form.Item>
-                    <Input
-                      placeholder="First Name"
-                      value={firstName}
-                      onChange={(text) => setFirstName(text.target.value)}
-                    />
-                  </Form.Item>
-                  <Form.Item>
-                    <Input
-                      placeholder="Last Name"
-                      value={lastName}
-                      onChange={(text) => setLastName(text.target.value)}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Modal>
+          <Title level={5}>List Of Doctors</Title>
         </div>
         <Table columns={columns} dataSource={items} />
         <div
@@ -153,4 +104,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Doctors;
