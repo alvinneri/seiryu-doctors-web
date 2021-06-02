@@ -103,7 +103,7 @@ const Login = () => {
           <Button
             type="danger"
             onClick={() => {
-              history.push("/register");
+              history.push("/");
             }}
             style={{ width: "100%", margin: "0em 0" }}
           >

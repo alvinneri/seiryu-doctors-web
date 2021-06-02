@@ -62,6 +62,7 @@ const Register = () => {
     setMobileNumber("");
     setBirthdate("");
     setEmail("");
+    setMedId("");
   };
 
   const onSubmit = async (e) => {
@@ -104,65 +105,72 @@ const Register = () => {
 
     try {
       const medRef = db.collection("medical-reps");
-      const snapshot = await medRef.where("uid", "==", medId).get();
+      const snapshot = await medRef.get();
       if (snapshot.empty) {
-        toast.error("Medical Representative Id not valid.");
+        toast.error("No Medical Representatives in our records.");
         return;
       } else {
-        let medId;
+        let isValid = false;
         snapshot.forEach((doc) => {
-          medId = doc.data().uid;
+          if (doc.data().uid.toLowerCase() === medId.toLowerCase()) {
+            isValid = true;
+          }
         });
 
-        let values = {
-          firstName: firstName,
-          lastName: lastName,
-          middleName: middleName,
-          title: title,
-          suffix: suffix,
-          addressLineOne: addressLineOne,
-          addressLineTwo: addressLineTwo,
-          city: city,
-          state: state,
-          country: country,
-          zipCode: zipCode,
-          prcNo: prcNo,
-          email: email,
-          mobileNumber: mobileNumber,
-          birthdate: birthdate,
-          medId: medId,
-        };
+        if (isValid) {
+          let values = {
+            firstName: firstName,
+            lastName: lastName,
+            middleName: middleName,
+            title: title,
+            suffix: suffix,
+            addressLineOne: addressLineOne,
+            addressLineTwo: addressLineTwo,
+            city: city,
+            state: state,
+            country: country,
+            zipCode: zipCode,
+            prcNo: prcNo,
+            email: email,
+            mobileNumber: mobileNumber,
+            birthdate: birthdate,
+            medId: medId,
+          };
 
-        try {
-          const snapshot = await userRef
-            .where("email", "==", values.email)
-            .get();
+          try {
+            const snapshot = await userRef
+              .where("email", "==", values.email)
+              .get();
 
-          if (!snapshot.empty) {
-            toast.error("Email already exist.");
-            return;
+            if (!snapshot.empty) {
+              toast.error("Email already exist.");
+              return;
+            }
+
+            const snapshot2 = await userRef
+              .where("mobileNumber", "==", values.mobileNumber)
+              .get();
+
+            if (!snapshot2.empty) {
+              toast.error("Phone Number already exist.");
+              return;
+            }
+
+            userRef
+              .add(values)
+              .then(() => {
+                toast.success("Account Successfully Registered");
+                reset();
+              })
+              .catch((err) => {
+                toast.error(err);
+              });
+          } catch (err) {
+            console.log(err);
           }
-
-          const snapshot2 = await userRef
-            .where("mobileNumber", "==", values.mobileNumber)
-            .get();
-
-          if (!snapshot2.empty) {
-            toast.error("Phone Number already exist.");
-            return;
-          }
-
-          userRef
-            .add(values)
-            .then(() => {
-              toast.success("Account Successfully Registered");
-              reset();
-            })
-            .catch((err) => {
-              toast.error(err);
-            });
-        } catch (err) {
-          console.log(err);
+        } else {
+          toast.error("Medical Representatives Id is not valid.");
+          return;
         }
       }
     } catch (err) {
@@ -411,7 +419,7 @@ const Register = () => {
             </Col>
           </Row>
           <Row justify="space-between">
-            <Col xs={24} sm={11}>
+            <Col xs={24}>
               <Form.Item>
                 <Button
                   type="primary"
@@ -420,17 +428,6 @@ const Register = () => {
                   style={{ width: "300px", margin: "1em 0" }}
                 >
                   Submit
-                </Button>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={11}>
-              <Form.Item>
-                <Button
-                  type="danger"
-                  onClick={() => history.push("/")}
-                  style={{ width: "300px", margin: "1em 0" }}
-                >
-                  BACK TO LOGIN
                 </Button>
               </Form.Item>
             </Col>

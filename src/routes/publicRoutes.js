@@ -8,8 +8,8 @@ import { PrivateRoute } from "../app/routes/PrivateRoute";
 export const PublicRoutes = () => {
   return (
     <Switch>
-      <Route exact path={"/"} component={Login} />
-      <Route exact path={"/register"} component={Register} />
+      <Route exact path={"/admin"} component={Login} />
+      <Route exact path={"/"} component={Register} />
       <PrivateRoute exact path={"/home"} component={Home} />
     </Switch>
   );

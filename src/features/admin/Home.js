@@ -57,7 +57,7 @@ const Home = () => {
       firstName: firstName,
       lastName: lastName,
       dateAdded: new Date(),
-      uid: `${lastName}-${randomNum}`,
+      uid: `${lastName.toLowerCase()}-${randomNum}`,
     };
 
     db.collection("medical-reps")

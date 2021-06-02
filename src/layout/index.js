@@ -14,7 +14,7 @@ const LayoutWrapper = (props) => {
     <Layout>
       <>
         <Layout>
-          <Content style={{ margin: "24px 16px 0" }}>
+          <Content style={{ margin: "24px 16px 0", background: "#fff" }}>
             <div style={{ padding: 24, height: "100%" }}>{children}</div>
           </Content>
         </Layout>
