@@ -10,8 +10,8 @@ export const Auth = ({ children }) => {
     auth.onAuthStateChanged(async (user) => {
       dispatch(setLoading(true));
       try {
-        const userData = await db.doc("/users/" + user?.uid).get();
-        dispatch(setUser(userData.data()));
+        console.log(user.uid, "auth change");
+        dispatch(setUser(user.uid));
       } catch (err) {
         console.log(err);
       } finally {

@@ -11,53 +11,55 @@ import {
 import { useDispatch } from "react-redux";
 import logo from "../../assets/images/seiryulogo.jpeg";
 import { Row, Col } from "antd";
-import { db } from "../../firebase/config";
+import { auth, db } from "../../firebase/config";
 import { toast } from "react-toastify";
 import "react-phone-input-2/lib/style.css";
 import { useHistory } from "react-router";
-import { setUser } from "../../store/public/actions";
+import { setLoading, setUser } from "../../store/public/actions";
 
 const Login = () => {
   const { Title, Text } = Typography;
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
   const userRef = db.collection("users");
   const dispatch = useDispatch();
 
   const reset = () => {
-    setUsername("");
+    setEmail("");
     setPassword("");
   };
 
   const onSubmit = async (e) => {
+    dispatch(setLoading(true));
     e.preventDefault();
 
-    if (!username || !password) {
-      toast.error("Username and password is required.");
+    if (!email || !password) {
+      toast.error("Email and password is required.");
       return;
     }
 
     let values = {
-      username: username,
+      email: email,
       password: password,
     };
 
-    const adminRef = db.collection("admin");
-    const snapshot = await adminRef
-      .where("username", "==", username)
-      .where("password", "==", password)
-      .get();
-    if (snapshot.empty) {
-      toast.error("Not authorized.");
-      return;
-    } else {
-      snapshot.forEach((doc) => {
-        console.log(doc.data());
-        dispatch(setUser(doc.data()));
-      });
-      history.push("/home");
-      toast.success("Authorized.");
+    try {
+      await auth
+        .signInWithEmailAndPassword(values.email, values.password)
+        .then(async (user) => {
+          console.log(user.user.uid, "user");
+          dispatch(setUser(user.user.uid));
+          toast.success("Authorized.");
+          history.push("/home");
+        })
+        .catch((err) => toast.error(err.message));
+      // toast.success(data)
+    } catch (error) {
+      toast.error("Not Authorized.");
+      console.log(error);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -74,13 +76,15 @@ const Login = () => {
             <Col span={24}>
               <Form.Item>
                 <Input
-                  placeholder="Username"
-                  value={username}
-                  onChange={(text) => setUsername(text.target.value)}
+                  style={{ borderRadius: 6 }}
+                  placeholder="Email"
+                  value={email}
+                  onChange={(text) => setEmail(text.target.value)}
                 />
               </Form.Item>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   type="password"
                   placeholder="Password"
                   value={password}
@@ -94,7 +98,7 @@ const Login = () => {
               type="primary"
               htmlType="submit"
               onClick={onSubmit}
-              style={{ width: "100%", margin: "0.3em 0" }}
+              style={{ width: "100%", margin: "0.3em 0", borderRadius: 6 }}
             >
               LOGIN
             </Button>
@@ -105,7 +109,7 @@ const Login = () => {
             onClick={() => {
               history.push("/");
             }}
-            style={{ width: "100%", margin: "0em 0" }}
+            style={{ width: "100%", margin: "0em 0", borderRadius: 6 }}
           >
             REGISTER A DOCTOR
           </Button>

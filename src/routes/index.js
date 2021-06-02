@@ -16,7 +16,7 @@ export const Routes = () => {
 
   const getRoutes = () => {
     if (user) {
-      if (user?.userType === USER_TYPES.ADMIN) {
+      if (user) {
         return <AdminRoutes />;
       } else {
         return <PublicRoutes />;

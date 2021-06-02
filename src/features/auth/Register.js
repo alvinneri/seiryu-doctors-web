@@ -205,6 +205,7 @@ const Register = () => {
             <Col xs={24} sm={3}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Title"
                   value={title}
                   onChange={(text) => setTitle(text.target.value)}
@@ -214,6 +215,7 @@ const Register = () => {
             <Col xs={24} sm={5}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="First Name"
                   value={firstName}
                   onChange={(text) => setFirstName(text.target.value)}
@@ -223,6 +225,7 @@ const Register = () => {
             <Col xs={24} sm={5}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Middle Name"
                   value={middleName}
                   onChange={(text) => setMiddleName(text.target.value)}
@@ -232,6 +235,7 @@ const Register = () => {
             <Col xs={24} sm={5}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Last Name"
                   value={lastName}
                   onChange={(text) => setLastName(text.target.value)}
@@ -241,6 +245,7 @@ const Register = () => {
             <Col xs={24} sm={3}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Suffix"
                   value={suffix}
                   onChange={(text) => setSuffix(text.target.value)}
@@ -256,6 +261,7 @@ const Register = () => {
             <Col span={24}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Address Line 1"
                   value={addressLineOne}
                   onChange={(text) => setAddresLineOne(text.target.value)}
@@ -267,6 +273,7 @@ const Register = () => {
             <Col span={24}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Address Line 2"
                   value={addressLineTwo}
                   onChange={(text) => setAddresLineTwo(text.target.value)}
@@ -279,6 +286,7 @@ const Register = () => {
             <Col xs={24} sm={11}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="City"
                   value={city}
                   onChange={(text) => setCity(text.target.value)}
@@ -288,6 +296,7 @@ const Register = () => {
             <Col xs={24} sm={11}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="State / Province / Region"
                   value={state}
                   onChange={(text) => setState(text.target.value)}
@@ -299,6 +308,7 @@ const Register = () => {
             <Col xs={24} sm={11}>
               <Form.Item>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Postal / Zip Code"
                   value={zipCode}
                   onChange={(text) => setZipCode(text.target.value)}
@@ -328,6 +338,7 @@ const Register = () => {
                   PRC No.*
                 </Title>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="PRC No."
                   value={prcNo}
                   onChange={(text) => setPrcNo(text.target.value)}
@@ -340,6 +351,7 @@ const Register = () => {
                   Email*
                 </Title>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Email"
                   value={email}
                   onChange={(text) => setEmail(text.target.value)}
@@ -358,7 +370,7 @@ const Register = () => {
                     padding: "0.25em",
                     paddingLeft: "3.5em",
                     width: "100%",
-                    borderRadius: "3px",
+                    borderRadius: 6,
                     border: "1px solid #c4bebe",
                   }}
                   country={"ph"}
@@ -378,7 +390,7 @@ const Register = () => {
                     !d || d.isAfter(setMaxBirthDate(new Date(), 0, 0, -18))
                   }
                   onChange={onChangeBirthdate}
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", borderRadius: 6 }}
                 />
               </Form.Item>
             </Col>
@@ -411,6 +423,7 @@ const Register = () => {
                   Medical Representative Id.*
                 </Title>
                 <Input
+                  style={{ borderRadius: 6 }}
                   placeholder="Id"
                   value={medId}
                   onChange={(text) => setMedId(text.target.value)}
@@ -425,7 +438,7 @@ const Register = () => {
                   type="primary"
                   htmlType="submit"
                   onClick={onSubmit}
-                  style={{ width: "300px", margin: "1em 0" }}
+                  style={{ width: "100%", margin: "1em 0", borderRadius: 6 }}
                 >
                   Submit
                 </Button>

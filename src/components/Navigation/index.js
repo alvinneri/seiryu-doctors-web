@@ -32,20 +32,23 @@ export const SideNavigation = () => {
 
   const getDrawerItems = () => {
     if (user) {
-      if (user.userType === USER_TYPES.ADMIN) {
-        setMenuItems([
-          {
-            name: "HOME",
-            icon: <HomeOutlined />,
-            path: "/home",
-          },
-          {
-            name: "LIST OF DOCTORS",
-            icon: <HomeOutlined />,
-            path: "/doctors",
-          },
-        ]);
-      }
+      setMenuItems([
+        {
+          name: "HOME",
+          icon: <HomeOutlined />,
+          path: "/home",
+        },
+        {
+          name: "LIST OF DOCTORS",
+          icon: <UserOutlined />,
+          path: "/doctors",
+        },
+        {
+          name: "LOG OUT",
+          icon: <LogoutOutlined />,
+          path: "/",
+        },
+      ]);
     } else {
       setMenuItems([
         {
@@ -84,6 +87,7 @@ export const SideNavigation = () => {
                   auth.signOut().then(() => {
                     dispatch(setUser(null));
                   });
+                  return;
                 }
 
                 history.push(route.path);

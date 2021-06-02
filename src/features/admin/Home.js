@@ -20,6 +20,7 @@ import { setUser } from "../../store/public/actions";
 import { usePagination } from "use-pagination-firestore";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import { SideNavigation } from "../../components/Navigation";
+import moment from "moment";
 
 const Home = () => {
   const { Title, Text } = Typography;
@@ -42,6 +43,12 @@ const Home = () => {
       limit: 10,
     }
   );
+
+  const getNumberOfDoctors = async (uid) => {
+    const userRef = db.collection("users");
+    const snapshot = await userRef.where("medId", "==", uid).get();
+    return snapshot.length;
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -87,6 +94,14 @@ const Home = () => {
       dataIndex: "uid",
       key: "uid",
     },
+    {
+      title: "Date Added",
+      dataIndex: "dateAdded",
+      key: "dateAdded",
+      render: (dateAdded) => (
+        <p>{moment(dateAdded.toDate()).format("MMM-DD-YYYY")}</p>
+      ),
+    },
   ];
 
   return (
@@ -100,7 +115,7 @@ const Home = () => {
             onClick={() => {
               setVisible(true);
             }}
-            style={{ width: "100%", margin: "0em 0" }}
+            style={{ width: "100%", margin: "0em 0", borderRadius: 6 }}
           >
             ADD MED REP
           </Button>
@@ -115,6 +130,7 @@ const Home = () => {
                 <Col span={24}>
                   <Form.Item>
                     <Input
+                      style={{ borderRadius: 6 }}
                       placeholder="First Name"
                       value={firstName}
                       onChange={(text) => setFirstName(text.target.value)}
@@ -122,6 +138,7 @@ const Home = () => {
                   </Form.Item>
                   <Form.Item>
                     <Input
+                      style={{ borderRadius: 6 }}
                       placeholder="Last Name"
                       value={lastName}
                       onChange={(text) => setLastName(text.target.value)}
