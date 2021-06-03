@@ -34,6 +34,7 @@
     "primary-color": "#1a1a1d"
   },
   "scripts": {
+    "deploy": "firebase deploy --only hosting",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",

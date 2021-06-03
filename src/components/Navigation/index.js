@@ -87,9 +87,9 @@ export const SideNavigation = () => {
                   auth.signOut().then(() => {
                     dispatch(setUser(null));
                   });
+                  history.push(route.path);
                   return;
                 }
-
                 history.push(route.path);
               }}
             >
