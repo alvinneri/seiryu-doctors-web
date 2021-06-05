@@ -13,6 +13,7 @@ import {
   BankOutlined,
   UsergroupAddOutlined,
   SettingOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -42,6 +43,11 @@ export const SideNavigation = () => {
           name: "LIST OF DOCTORS",
           icon: <UserOutlined />,
           path: "/doctors",
+        },
+        {
+          name: "UPLOAD CSV",
+          icon: <UploadOutlined />,
+          path: "/upload-csv",
         },
         {
           name: "LOG OUT",
