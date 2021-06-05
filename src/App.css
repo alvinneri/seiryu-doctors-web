@@ -1,5 +1,5 @@
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: "Arial", "Helvetica", sans-serif;
 }
 
 #components-layout-demo-responsive .logo {
@@ -54,4 +54,9 @@
   width: 100%;
   text-align: center;
   margin-top: 1em;
+}
+
+.header-signup {
+  color: #0f52ba;
+  font-family: "Open Sans Condensed", Helvetica, sans-serif;
 }

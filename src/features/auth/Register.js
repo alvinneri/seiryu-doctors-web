@@ -9,7 +9,7 @@ import {
   Space,
 } from "antd";
 import { useDispatch } from "react-redux";
-import logo from "../../assets/images/seiryulogo.jpeg";
+import logo from "../../assets/images/logo.png";
 import { Row, Col } from "antd";
 import { CountryDropdown } from "react-country-region-selector";
 import { db } from "../../firebase/config";
@@ -193,11 +193,13 @@ const Register = () => {
         <img src={logo} className="signup-logo" />
       </div>
       <div style={{ margin: "0 auto", maxWidth: "600px" }}>
-        <Title level={5}>Seiryu Pharmacy Partner Sign-up Form</Title>
-        <Title level={5}>Doctor Partner</Title>
+        <Title level={4} className="header-signup">
+          Seiryu Pharmacy Partner Sign-up Form
+        </Title>
+        <Title level={4}>Doctor Partner</Title>
 
         <Form onSubmit={onSubmit} style={{ marginTop: "1em" }}>
-          <Title level={5} type="secondary">
+          <Title level={5} type="primary">
             Name*
           </Title>
           {errorName && <Text type="danger">{errorName}</Text>}
@@ -253,7 +255,7 @@ const Register = () => {
               </Form.Item>
             </Col>
           </Row>
-          <Title level={5} type="secondary">
+          <Title level={5} type="primary">
             Clinic Address*
           </Title>
           {errorClinic && <Text type="danger">{errorClinic}</Text>}
@@ -334,7 +336,7 @@ const Register = () => {
           <Row justify="space-between">
             <Col xs={24} sm={11}>
               <Form.Item>
-                <Title level={5} type="secondary">
+                <Title level={5} type="primary">
                   PRC No.*
                 </Title>
                 <Input
@@ -347,7 +349,7 @@ const Register = () => {
             </Col>
             <Col xs={24} sm={11}>
               <Form.Item>
-                <Title level={5} type="secondary">
+                <Title level={5} type="primary">
                   Email*
                 </Title>
                 <Input
@@ -362,7 +364,7 @@ const Register = () => {
           <Row justify="space-between">
             <Col xs={24} sm={11}>
               <Form.Item>
-                <Title level={5} type="secondary">
+                <Title level={5} type="primary">
                   Mobile No.*
                 </Title>
                 <PhoneInput
@@ -381,7 +383,7 @@ const Register = () => {
             </Col>
             <Col xs={24} sm={11}>
               <Form.Item>
-                <Title level={5} type="secondary">
+                <Title level={5} type="primary">
                   Birthday*
                 </Title>
                 <DatePicker
@@ -396,11 +398,11 @@ const Register = () => {
             </Col>
           </Row>
           {errorOthers && <Text type="danger">{errorOthers}</Text>}
-          <Title level={5} type="secondary">
+          <Title level={5} type="primary">
             DATA PRIVACY NOTICE
           </Title>
           <Form.Item>
-            <Text>
+            <Text style={{ fontStyle: "italic", textAlign: "justify" }}>
               The data you provided here will be used by Seiryu Japanese
               Pharmacy and its affiliates, to provide you partnership
               information, on how Seiryu Pharmacy can help you take care of your
@@ -419,7 +421,7 @@ const Register = () => {
           <Row justify="space-between" style={{ marginTop: 10 }}>
             <Col xs={24} sm={11}>
               <Form.Item>
-                <Title level={5} type="secondary">
+                <Title level={5} type="primary">
                   Medical Representative Id.*
                 </Title>
                 <Input
